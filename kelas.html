@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School ERP â€” Kelas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/tailwind.css" />
+  </head>
+  <body class="dashboard-page" x-data="appShell()" x-init="init()">
+    <div class="app-layout" id="appLayout" :class="sidebarCollapsed ? 'sidebar-collapsed-layout' : ''">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar" :class="sidebarOpen ? 'mobile-open' : ''">
+        <div class="sidebar-brand d-flex align-items-center gap-2 px-3 py-4">
+          <span class="sidebar-brand-icon d-inline-flex align-items-center justify-content-center rounded-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-brand-svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.905 59.905 0 0 1 12 3.493a59.902 59.902 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm6 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm6 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+            </svg>
+          </span>
+          <div class="sidebar-brand-text">
+            <span class="fw-bold text-body">SchoolERP</span>
+            <small class="d-block text-muted lh-1" style="font-size: 0.7rem">Management</small>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav px-2 pb-4 flex-grow-1 overflow-auto">
+          <div class="nav-section-label">Main Menu</div>
+          <ul class="nav flex-column gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25A2.25 2.25 0 0 1 8.25 10.5H6A2.25 2.25 0 0 1 3.75 8.25V6zM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25zM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 8.25h-2.25A2.25 2.25 0 0 1 13.5 6zM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25z" />
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="kelas.html" aria-current="page">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h9.75A2.25 2.25 0 0 1 20.25 6v.878m-12-.84v9.568c0 .414.336.75.75.75h9.75a.75.75 0 0 0 .75-.75V6.038m-12-.84A2.25 2.25 0 0 1 5.25 2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v12.84m-17.25 0h17.25" />
+                </svg>
+                <span>Kelas</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="murid.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg><span>Murid</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="guru.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg><span>Guru</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="tagihan.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg><span>Tagihan</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="payment.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" /></svg><span>Payment</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="absensi.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12V15Zm3 0h.008v.008H15V15Zm-6 6h.008v.008H12V21Zm3 0h.008v.008H15V21Z" /></svg><span>Absensi</span></a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label mt-4">User Management</div>
+          <ul class="nav flex-column gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="role.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.763-.59-3.849a6.086 6.086 0 0 0-2.357-.464 6.086 6.086 0 0 0-2.357.464 12.732 12.732 0 0 0-.59 3.849Z" /></svg><span>Role</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="permission.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 8.25a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm1.5 0c0 2.556-1.875 4.875-4.5 4.875V18a2.25 2.25 0 0 1-2.25 2.25H9.75A2.25 2.25 0 0 1 7.5 18v-.75c0-.621.504-1.125 1.125-1.125h2.625a1.125 1.125 0 0 0 1.125-1.125v-1.5A3.375 3.375 0 0 1 15.75 8.25Z" /></svg><span>Permission</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="user.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 11.25a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg><span>User</span></a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label mt-4">Settings</div>
+          <ul class="nav flex-column gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="setting.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sidebar-nav-icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.437.613-.431.992a6.932 6.932 0 0 1 0 .255c-.006.378.138.75.431.99l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg><span>Web Setting</span></a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main -->
+      <div class="main-wrap">
+        <!-- Top navbar -->
+        <header class="top-navbar shadow-sm">
+          <div class="top-navbar-start d-flex align-items-center flex-shrink-0">
+            <button
+              type="button"
+              class="sidebar-toggle-btn sidebar-toggle-btn--ghost"
+              id="sidebarToggle"
+              data-slot="button"
+              data-variant="ghost"
+              data-size="icon"
+              aria-label="Toggle sidebar"
+              @click="toggleSidebar()"
+            >
+              <span class="sidebar-toggle-btn__inner" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-panel-left-close sidebar-toggle-lucide"
+                  x-show="(isDesktop() && !sidebarCollapsed) || (!isDesktop() && sidebarOpen)"
+                >
+                  <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                  <path d="M9 3v18"></path>
+                  <path d="m16 15-3-3 3-3"></path>
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-panel-left-open sidebar-toggle-lucide"
+                  x-show="(isDesktop() && sidebarCollapsed) || (!isDesktop() && !sidebarOpen)"
+                >
+                  <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                  <path d="M9 3v18"></path>
+                  <path d="m14 9 3 3-3 3"></path>
+                </svg>
+              </span>
+            </button>
+            <span class="sidebar-toggle-sep d-none d-md-inline-block" aria-hidden="true"></span>
+          </div>
+
+          <div class="top-navbar-end">
+            <form class="top-navbar-search" role="search" action="#" @submit.prevent>
+              <div class="top-navbar-search-field">
+                <span class="top-navbar-search-icon" aria-hidden="true"><i class="bi bi-search"></i></span>
+                <input
+                  type="search"
+                  class="top-navbar-search-input"
+                  placeholder="Search..."
+                  autocomplete="off"
+                  aria-label="Search"
+                />
+              </div>
+            </form>
+
+            <button type="button" class="btn btn-icon btn-light border-0" id="themeToggle" aria-label="Toggle theme" title="Mode terang/gelap" @click="toggleTheme()">
+              <i class="bi bi-moon-stars-fill" x-show="theme !== 'dark'"></i>
+              <i class="bi bi-sun-fill" x-show="theme === 'dark'"></i>
+            </button>
+
+            <div class="dropdown">
+              <button
+                type="button"
+                class="btn btn-icon btn-light border-0 position-relative nav-notif-trigger"
+                id="notifDropdown"
+                @click="toggleNotif()"
+                :aria-expanded="notifOpen ? 'true' : 'false'"
+                aria-label="Notifications"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-bell top-navbar-notif-bell"
+                  aria-hidden="true"
+                >
+                  <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
+                  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>
+                </svg>
+                <span class="notif-dropdown__unread-dot" x-show="notifUnreadCount > 0" aria-hidden="true"></span>
+              </button>
+              <div
+                class="dropdown-menu dropdown-menu-end notif-dropdown"
+                aria-labelledby="notifDropdown"
+                x-show="notifOpen"
+                x-transition.opacity
+                @click.outside="closeNotif()"
+                style="display: none"
+              >
+                <div class="notif-dropdown__header">
+                  <span class="notif-dropdown__title">Notifikasi</span>
+                  <a href="#" class="notif-dropdown__link-all">Lihat semua</a>
+                </div>
+                <div class="notif-dropdown__list">
+                  <a href="#" class="notif-dropdown__item notif-item notif-dropdown__item--unread">
+                    <span class="notif-dropdown__avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Andi" alt="" width="40" height="40" class="rounded-circle" />
+                    </span>
+                    <div class="notif-dropdown__body">
+                      <p class="notif-dropdown__subject">Pembayaran diterima</p>
+                      <p class="notif-dropdown__message">SPP Januari telah dibayar untuk Andi Pratama.</p>
+                      <div class="notif-dropdown__time">
+                        <i class="bi bi-clock" aria-hidden="true"></i>
+                        <span>2 menit lalu</span>
+                      </div>
+                    </div>
+                    <span class="notif-dropdown__unread-dot" aria-hidden="true"></span>
+                  </a>
+                  <a href="#" class="notif-dropdown__item notif-item">
+                    <span class="notif-dropdown__avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" alt="" width="40" height="40" class="rounded-circle" />
+                    </span>
+                    <div class="notif-dropdown__body">
+                      <p class="notif-dropdown__subject">Tagihan baru</p>
+                      <p class="notif-dropdown__message">Kelas 10A — uang gedung menunggu konfirmasi.</p>
+                      <div class="notif-dropdown__time">
+                        <i class="bi bi-clock" aria-hidden="true"></i>
+                        <span>1 jam lalu</span>
+                      </div>
+                    </div>
+                  </a>
+                  <div class="notif-dropdown__item notif-item notif-dropdown__item--unread notif-dropdown__item--actions">
+                    <span class="notif-dropdown__avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Citra" alt="" width="40" height="40" class="rounded-circle" />
+                    </span>
+                    <div class="notif-dropdown__body">
+                      <p class="notif-dropdown__subject">Undangan rapat orang tua</p>
+                      <p class="notif-dropdown__message">Anda diundang ke rapat koordinasi kelas XI IPA 1.</p>
+                      <div class="notif-dropdown__time">
+                        <i class="bi bi-clock" aria-hidden="true"></i>
+                        <span>1 hari lalu</span>
+                      </div>
+                      <div class="notif-dropdown__actions">
+                        <button type="button" class="notif-dropdown__btn notif-dropdown__btn--outline">Terima</button>
+                        <button type="button" class="notif-dropdown__btn notif-dropdown__btn--danger">Tolak</button>
+                      </div>
+                    </div>
+                    <span class="notif-dropdown__unread-dot" aria-hidden="true"></span>
+                  </div>
+                  <a href="#" class="notif-dropdown__item notif-item">
+                    <span class="notif-dropdown__avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Dewi" alt="" width="40" height="40" class="rounded-circle" />
+                    </span>
+                    <div class="notif-dropdown__body">
+                      <p class="notif-dropdown__subject">Absensi</p>
+                      <p class="notif-dropdown__message">5 murid belum hadir hari ini.</p>
+                      <div class="notif-dropdown__time">
+                        <i class="bi bi-clock" aria-hidden="true"></i>
+                        <span>Hari ini</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown ms-1">
+              <button
+                type="button"
+                class="btn btn-icon btn-light border-0 top-navbar-profile-btn"
+                id="profileDropdown"
+                @click="toggleProfile()"
+                :aria-expanded="profileOpen ? 'true' : 'false'"
+                aria-label="Profil pengguna"
+              >
+                <img
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jack"
+                  alt=""
+                  width="32"
+                  height="32"
+                  class="rounded-circle"
+                />
+              </button>
+              <div
+                class="dropdown-menu dropdown-menu-end profile-dropdown"
+                aria-labelledby="profileDropdown"
+                x-show="profileOpen"
+                x-transition.opacity
+                @click.outside="closeProfile()"
+                style="display: none"
+              >
+                <div class="profile-dropdown-header profile-dropdown-header--row">
+                  <img
+                    class="profile-dropdown-header__avatar rounded-circle"
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jack"
+                    alt=""
+                    width="44"
+                    height="44"
+                  />
+                  <div class="profile-dropdown-header__meta">
+                    <div class="profile-dropdown-name">Toby Belhome</div>
+                    <div class="profile-dropdown-email">hello@tobybelhome.com</div>
+                  </div>
+                </div>
+                <div class="profile-dropdown-body">
+                  <a class="profile-dropdown-item" href="#">
+                    <span class="profile-dropdown-icon" aria-hidden="true"><i class="bi bi-person"></i></span>
+                    Profil
+                  </a>
+                  <a class="profile-dropdown-item" href="#" @click.prevent="closeProfile(); toggleNotif();">
+                    <span class="profile-dropdown-icon" aria-hidden="true"><i class="bi bi-bell"></i></span>
+                    Notifikasi
+                  </a>
+                  <div class="profile-dropdown-divider" role="separator" aria-hidden="true"></div>
+                  <button type="button" class="profile-dropdown-item profile-dropdown-item--button profile-dropdown-item--logout" id="logoutBtn">
+                    <span class="profile-dropdown-icon" aria-hidden="true"><i class="bi bi-box-arrow-right"></i></span>
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page content -->
+        <main class="main-content">
+          <div class="py-4 px-3 lg:px-4">
+            <div class="d-flex flex-wrap align-items-end justify-content-between gap-3">
+              <div>
+                <h1 class="page-title">Kelas</h1>
+              </div>
+            </div>
+
+            <div
+              class="dash-latest-payments card h-full min-h-0 shadow-sm"
+              x-data="dataTable({
+                keyField: 'id',
+                searchableColumns: ['nama', 'wali'],
+                sortableColumns: [
+                  { key: 'nama', type: 'text' },
+                  { key: 'wali', type: 'text' },
+                  { key: 'jumlah', type: 'number' },
+                  { key: 'status', type: 'text' }
+                ],
+                pageSizeOptions: [10, 20, 30],
+                defaultPageSize: 10,
+                formDefaults: { id: '', nama: '', wali: '', jumlah: 0, status: 'Aktif' },
+                rows: [
+                  { id: '1', nama: 'X IPA 1', wali: 'Budi Santoso, S.Pd', jumlah: 32, status: 'Aktif' },
+                  { id: '2', nama: 'X IPA 2', wali: 'Siti Aminah, S.Pd', jumlah: 30, status: 'Aktif' },
+                  { id: '3', nama: 'X IPS 1', wali: 'Ahmad Hidayat, M.Pd', jumlah: 28, status: 'Nonaktif' },
+                  { id: '4', nama: 'XI IPA 1', wali: 'Dewi Lestari, S.Pd', jumlah: 34, status: 'Aktif' },
+                  { id: '5', nama: 'XI IPA 2', wali: 'Rudi Hermawan, M.Pd', jumlah: 31, status: 'Nonaktif' },
+                  { id: '6', nama: 'XI IPS 1', wali: 'Maya Indira, S.Pd', jumlah: 29, status: 'Aktif' },
+                  { id: '7', nama: 'XII IPA 1', wali: 'Indra Gunawan, M.Pd', jumlah: 33, status: 'Nonaktif' },
+                  { id: '8', nama: 'XII IPS 1', wali: 'Lina Marlina, S.Pd', jumlah: 27, status: 'Aktif' },
+                  { id: '9', nama: 'X IPS 3', wali: 'Rina Kusuma, S.Pd', jumlah: 26, status: 'Aktif' },
+                  { id: '10', nama: 'XI IPS 2', wali: 'Hendra Wijaya, M.Pd', jumlah: 28, status: 'Nonaktif' },
+                  { id: '11', nama: 'XII IPS 2', wali: 'Nadia Putri, S.Pd', jumlah: 25, status: 'Aktif' },
+                  { id: '12', nama: 'XII IPA 3', wali: 'Fajar Nugroho, M.Pd', jumlah: 30, status: 'Aktif' }
+                ],
+                onView: (row) => {
+                  alert('Detail kelas\\n\\nNama: ' + row.nama + '\\nWali: ' + row.wali + '\\nJumlah siswa: ' + row.jumlah + '\\nStatus: ' + row.status);
+                },
+                onSubmit: ({ form }) => {
+                  const jumlah = parseInt(form.jumlah, 10);
+                  if (!form.nama || !form.wali) {
+                    alert('Nama kelas dan wali kelas wajib diisi.');
+                    return { row: null };
+                  }
+                  return { row: { ...form, jumlah: Number.isFinite(jumlah) ? jumlah : 0 } };
+                }
+              })"
+              @keydown.escape.window="closeRowMenu()"
+              x-init="init()"
+            >
+              <div class="dash-latest-payments__toolbar d-flex flex-wrap align-items-center justify-content-end gap-3 px-5 pt-5 pb-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 flex-shrink-0">
+                  <div class="dash-latest-payments__search">
+                    <i class="bi bi-search dash-latest-payments__search-icon" aria-hidden="true"></i>
+                    <input
+                    type="search"
+                    id="searchKelas"
+                    class="form-control form-control-sm dash-latest-payments__filter-input dash-latest-payments__search-input"
+                    placeholder="Nama kelas atau wali…"
+                    autocomplete="off"
+                    aria-label="Cari nama kelas atau wali kelas"
+                    x-model.debounce.200ms="query"
+                    @input="page = 1"
+                  />
+                  </div>
+                  
+                  <button type="button" class="btn btn-sm btn-primary rounded-3 px-3 flex-shrink-0 text-nowrap" id="btnTambahKelas" @click="openCreate()">
+                    <i class="bi bi-plus-lg me-1"></i> Tambah kelas
+                  </button>
+                </div>
+              </div>
+
+              <div class="dash-latest-payments__table-shell">
+                <div class="table-responsive dash-latest-payments__table-wrap">
+                  <table class="dash-latest-payments__table w-full border-collapse text-start">
+                    <colgroup>
+                      <col style="width:22%" />
+                      <col style="width:36%" />
+                      <col style="width:12%" />
+                      <col style="width:22%" />
+                      <col class="dash-latest-payments__col dash-latest-payments__col--action" />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th data-slot="table-head" class="dash-latest-payments__th" scope="col" :aria-sort="sort.col === 'nama' ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'">
+                          <button type="button" data-slot="button" data-variant="ghost" data-size="default" class="dash-latest-payments__th-sort-btn" @click="setSort('nama')">
+                            <span>Nama kelas</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down dash-latest-payments__th-sort-svg" :class="{ 'dash-latest-payments__th-sort-svg--active': sort.col === 'nama' }" aria-hidden="true"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+                          </button>
+                        </th>
+                        <th data-slot="table-head" class="dash-latest-payments__th" scope="col" :aria-sort="sort.col === 'wali' ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'">
+                          <button type="button" data-slot="button" data-variant="ghost" data-size="default" class="dash-latest-payments__th-sort-btn" @click="setSort('wali')">
+                            <span>Wali kelas</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down dash-latest-payments__th-sort-svg" :class="{ 'dash-latest-payments__th-sort-svg--active': sort.col === 'wali' }" aria-hidden="true"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+                          </button>
+                        </th>
+                        <th data-slot="table-head" class="dash-latest-payments__th" scope="col" :aria-sort="sort.col === 'jumlah' ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'">
+                          <button type="button" data-slot="button" data-variant="ghost" data-size="default" class="dash-latest-payments__th-sort-btn" @click="setSort('jumlah')">
+                            <span>Jumlah siswa</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down dash-latest-payments__th-sort-svg" :class="{ 'dash-latest-payments__th-sort-svg--active': sort.col === 'jumlah' }" aria-hidden="true"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+                          </button>
+                        </th>
+                        <th data-slot="table-head" class="dash-latest-payments__th" scope="col" :aria-sort="sort.col === 'status' ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'">
+                          <button type="button" data-slot="button" data-variant="ghost" data-size="default" class="dash-latest-payments__th-sort-btn" @click="setSort('status')">
+                            <span>Status</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down dash-latest-payments__th-sort-svg" :class="{ 'dash-latest-payments__th-sort-svg--active': sort.col === 'status' }" aria-hidden="true"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+                          </button>
+                        </th>
+                        <th data-slot="table-head" class="dash-latest-payments__th dash-latest-payments__th--row-actions" scope="col"><span class="visually-hidden">Menu</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template x-for="row in pagedRows" :key="row.id">
+                        <tr class="dash-latest-payments__tr" :data-id="row.id">
+                          <td class="dash-latest-payments__td"><span class="dash-latest-payments__name" x-text="row.nama"></span></td>
+                          <td class="dash-latest-payments__td" x-text="row.wali"></td>
+                          <td class="dash-latest-payments__td" x-text="row.jumlah"></td>
+                          <td class="dash-latest-payments__td">
+                            <span
+                              class="dash-pay-status" data-slot="badge" data-variant="outline"
+                              :class="normalizeText(row.status) === 'aktif' ? 'dash-pay-status--success' : 'dash-pay-status--failed'"
+                              x-text="row.status"
+                            ></span>
+                          </td>
+                          <td class="dash-latest-payments__td dash-latest-payments__td--row-actions">
+                            <div class="dash-row-menu" data-slot="dropdown-menu" @click.outside="closeRowMenu()">
+                              <button
+                                type="button"
+                                data-slot="dropdown-menu-trigger"
+                                data-variant="ghost"
+                                data-size="icon"
+                                class="dash-row-menu__trigger"
+                                aria-haspopup="menu"
+                                :aria-expanded="rowMenuId === row.id ? 'true' : 'false'"
+                                @click.stop="toggleRowMenu(row)"
+                              >
+                                <span class="visually-hidden">Buka menu</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis dash-row-menu__trigger-icon" aria-hidden="true"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                              </button>
+                              <div
+                                class="dash-row-menu__content"
+                                data-slot="dropdown-menu-content"
+                                role="menu"
+                                x-show="rowMenuId === row.id"
+                                x-transition.opacity.duration.100ms
+                              >
+                                <button type="button" class="dash-row-menu__item" role="menuitem" @click="viewRow(row); closeRowMenu()">Lihat</button>
+                                <button type="button" class="dash-row-menu__item" role="menuitem" @click="openEdit(row); closeRowMenu()">Edit</button>
+                                <button type="button" class="dash-row-menu__item dash-row-menu__item--destructive" role="menuitem" @click="confirm('Hapus kelas \"' + row.nama + '\"?') && (removeRow(row), closeRowMenu())">Hapus</button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="dash-latest-payments__footer d-flex flex-wrap align-items-center justify-content-between gap-3 px-5 py-4">
+                <p class="dash-latest-payments__selection mb-0 text-muted" id="kelasPageInfo" x-text="pageInfo"></p>
+                <div class="d-flex align-items-center gap-1" aria-label="Navigasi halaman">
+                  <button type="button" class="dash-latest-payments__page-btn" data-variant="outline" data-size="icon" :disabled="page <= 1" @click="setPage(1)" aria-label="Halaman pertama"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-left dash-page-btn-lucide" aria-hidden="true"><path d="m11 17-5-5 5-5"></path><path d="m18 17-5-5 5-5"></path></svg></button>
+                  <button type="button" class="dash-latest-payments__page-btn" data-variant="outline" data-size="icon" :disabled="page <= 1" @click="setPage(page - 1)" aria-label="Halaman sebelumnya"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left dash-page-btn-lucide" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+                  <button type="button" class="dash-latest-payments__page-btn" data-variant="outline" data-size="icon" :disabled="page >= totalPages" @click="setPage(page + 1)" aria-label="Halaman berikutnya"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right dash-page-btn-lucide" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+                  <button type="button" class="dash-latest-payments__page-btn" data-variant="outline" data-size="icon" :disabled="page >= totalPages" @click="setPage(totalPages)" aria-label="Halaman terakhir"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-right dash-page-btn-lucide" aria-hidden="true"><path d="m6 17 5-5-5-5"></path><path d="m13 17 5-5-5-5"></path></svg></button>
+                </div>
+              </div>
+
+                <template x-teleport="body">
+                  <!-- Modal tambah / edit kelas (Alpine) -->
+                  <div
+                    class="modal fade"
+                    id="modalKelas"
+                    tabindex="-1"
+                    aria-labelledby="modalKelasTitle"
+                    aria-hidden="true"
+                    x-show="modalOpen"
+                    x-transition.opacity
+                    style="display: none"
+                    @keydown.escape.window="closeModal()"
+                  >
+                    <div class="modal-dialog modal-dialog-centered" @click.self="closeModal()">
+                      <div class="modal-content border-0 shadow-lg rounded-4">
+                        <form id="formKelas" novalidate @submit.prevent="submitForm()">
+                          <div class="modal-header border-0 pb-0">
+                            <h3 class="modal-title fs-6 fw-medium" id="modalKelasTitle" x-text="modalMode === 'edit' ? 'Edit kelas' : 'Tambah kelas'"></h3>
+                            <button type="button" class="btn-close" aria-label="Tutup" @click="closeModal()"></button>
+                          </div>
+                          <div class="modal-body pt-2">
+                            <input type="hidden" id="kelasEditId" x-model="form.id" />
+                            <div class="mb-3">
+                              <label class="form-label small" for="kelasNama">Nama kelas</label>
+                              <input type="text" class="form-control form-control-sm rounded-3" id="kelasNama" required placeholder="Contoh: X IPA 1" autocomplete="off" x-model="form.nama" />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label small" for="kelasWali">Wali kelas</label>
+                              <input type="text" class="form-control form-control-sm rounded-3" id="kelasWali" required placeholder="Nama lengkap guru" autocomplete="off" x-model="form.wali" />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label small" for="kelasJumlah">Jumlah siswa</label>
+                              <input type="number" class="form-control form-control-sm rounded-3" id="kelasJumlah" min="0" value="0" x-model.number="form.jumlah" />
+                            </div>
+                            <div class="mb-0">
+                              <label class="form-label small" for="kelasStatus">Status</label>
+                              <select id="kelasStatus" class="form-select form-select-sm rounded-3" x-model="form.status">
+                                <option value="Aktif">Aktif</option>
+                                <option value="Nonaktif">Nonaktif</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="modal-footer border-0 pt-0">
+                            <button type="button" class="btn btn-sm btn-light rounded-3" @click="closeModal()">Batal</button>
+                            <button type="submit" class="btn btn-sm btn-primary rounded-3">Simpan</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- demoModal: dihapus (Bootstrap) -->
+
+    <div class="sidebar-backdrop d-lg-none" id="sidebarBackdrop" aria-hidden="true" :class="sidebarOpen ? 'show' : ''" @click="closeSidebar()"></div>
+
+    <script defer src="assets/js/alpine/components.js"></script>
+    <script defer src="assets/js/vendor/alpine.min.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        if (window.Alpine) return;
+        var s = document.createElement("script");
+        s.src = "https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js";
+        s.onload = function () {
+          try {
+            window.Alpine && window.Alpine.start && window.Alpine.start();
+          } catch (e) {}
+        };
+        document.head.appendChild(s);
+      });
+    </script>
+  </body>
+</html>

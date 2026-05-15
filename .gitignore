@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Logs & debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors (uncomment if you do not want these in repo)
+# .vscode/
+# .idea/
+
+# Optional build caches
+.cache/
+.turbo/

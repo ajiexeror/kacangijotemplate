@@ -1,0 +1,2479 @@
+@config "../../tailwind.config.js";
+
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  body {
+    background: #f5f6fa;
+    color: #09090b;
+    --bs-body-bg: #f5f6fa;
+    --bs-body-color: #09090b;
+    --bs-secondary-color: rgb(100 116 139);
+    --border-color: rgba(0, 0, 0, 0.06);
+    /* Di style.css: html/body memakai --app-font-size; inherit agar selaras */
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .dark body {
+    background: #18181b;
+    color: #f1f5f9;
+    --bs-body-bg: #18181b;
+    --bs-body-color: #f1f5f9;
+    --bs-secondary-color: rgb(148 163 184);
+    --border-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+@layer components {
+  /* Minimal Bootstrap-compat layer so we can drop Bootstrap CSS */
+  .d-flex { @apply flex; }
+  .d-inline-flex { @apply inline-flex; }
+  .d-none { @apply hidden; }
+  /* Kombinasi Bootstrap: hidden di layar kecil, flex dari breakpoint md */
+  .d-none.d-md-flex {
+    @apply hidden md:flex;
+  }
+  .d-sm-inline-flex { @apply sm:inline-flex; }
+  .d-md-none { @apply md:hidden; }
+  .d-lg-none { @apply lg:hidden; }
+  .flex-column { @apply flex-col; }
+  .flex-wrap { @apply flex-wrap; }
+  .flex-grow-1 { @apply grow; }
+  .flex-shrink-0 { @apply shrink-0; }
+  .h-100 { height: 100%; }
+  .w-full { width: 100%; }
+  .ml-auto { margin-left: auto; }
+  .min-h-0 { min-height: 0; }
+  .min-w-0 { min-width: 0px; }
+
+  .align-items-center { @apply items-center; }
+  .align-items-start { @apply items-start; }
+  .align-middle { @apply align-middle; }
+  .justify-content-between { @apply justify-between; }
+  .justify-content-end { @apply justify-end; }
+
+  .text-muted { @apply text-slate-500 dark:text-slate-400; }
+  /* .small — di assets/css/style.css (supaya sama di semua halaman) */
+  .text-nowrap { @apply whitespace-nowrap; }
+  .text-end { @apply text-right; }
+
+  .position-relative { @apply relative; }
+  .position-absolute { @apply absolute; }
+
+  .border { @apply border border-slate-200/70 dark:border-white/10; }
+  .border-top { @apply border-t border-slate-200/70 dark:border-white/10; }
+  .rounded-3 { border-radius: 0.75rem; }
+  .rounded-4 { border-radius: 1rem; }
+  .shadow-lg { @apply shadow-lg shadow-slate-900/10 dark:shadow-black/30; }
+
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-[14px] font-normal transition select-none; }
+  .btn-sm { @apply px-3 py-1.5 text-[14px] font-normal; }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-hover dark:bg-[#fafafb] dark:text-slate-900 dark:hover:bg-[#e4e4e7];
+  }
+  .btn-light { @apply bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/15; }
+  .btn-close {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white;
+  }
+  .btn-close::before { content: "×"; font-size: 1.25rem; line-height: 1; }
+
+  .card { @apply rounded-2xl border border-slate-200 bg-white shadow-none dark:border-white/15 dark:bg-[#09090b]; }
+  .card-body { @apply p-4; }
+
+  .form-control,
+  .form-select {
+    @apply w-full rounded-xl border border-[#e4e4e8] bg-white px-3 py-2 text-base text-slate-800 outline-none ring-0 placeholder:text-slate-400 focus:border-[#27272b] focus:shadow-[0_0_0_2px_#929295] dark:border-[#e4e4e8] dark:bg-slate-950/40 dark:text-slate-100 dark:focus:border-[#27272b] dark:focus:shadow-[0_0_0_2px_#929295];
+  }
+  .form-control-sm,
+  .form-select-sm { @apply px-3 py-1.5 text-sm; }
+  .form-label { @apply mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200; }
+
+  .table-responsive { @apply overflow-x-auto; }
+  .table { @apply w-full border-collapse text-base; }
+  .table thead th {
+    @apply px-3 py-3 text-left text-sm font-bold text-white;
+    background: linear-gradient(180deg, #0b0f19 0%, #111827 100%) !important;
+  }
+  .dark .table thead th {
+    background: #18181b !important;
+    background-image: none !important;
+    @apply text-slate-200;
+  }
+  .table tbody td { @apply border-t border-slate-200/70 px-3 py-3 text-base text-slate-800 dark:border-white/10 dark:text-slate-100; }
+  .table-hover tbody tr:hover td { @apply bg-slate-50/60 dark:bg-white/5; }
+
+  .badge { @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold; }
+  .pagination { @apply inline-flex items-center gap-1; }
+  .page-link { @apply inline-flex items-center justify-center rounded-md border border-slate-200/70 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10; }
+  .page-item.disabled .page-link { @apply pointer-events-none opacity-50; }
+  .page-item.active .page-link {
+    @apply border-primary bg-primary text-white dark:border-[#fafafb] dark:bg-[#fafafb] dark:text-slate-900;
+  }
+
+  .modal { @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4; }
+  .modal-dialog { @apply w-full max-w-lg; }
+  .modal-content { @apply rounded-2xl bg-white dark:bg-slate-950; }
+  .modal-header { @apply flex items-start justify-between gap-3 px-5 pt-5; }
+  .modal-body { @apply px-5 py-4; }
+  .modal-footer { @apply flex items-center justify-end gap-2 px-5 pb-5; }
+
+  /* Simple dropdowns without Bootstrap JS */
+  .dropdown { @apply relative; }
+  .dropdown-menu {
+    @apply absolute right-0 top-full z-50 mt-2 min-w-56 rounded-2xl border border-slate-200/70 bg-white shadow-lg shadow-slate-900/10 dark:border-white/10 dark:bg-slate-950 dark:shadow-black/30;
+    display: none;
+  }
+  /* Alpine-controlled menus (notif, profil) dikecualikan — hanya x-show yang mengatur tampil */
+  .dropdown:hover .dropdown-menu:not(.notif-dropdown):not(.profile-dropdown) {
+    display: block;
+  }
+
+  /* Saat x-show true Alpine menghapus inline display; tanpa ini cascade kembali ke .dropdown-menu { display: none } */
+  .dropdown-menu.notif-dropdown,
+  .dropdown-menu.profile-dropdown {
+    display: block;
+  }
+
+  /* Panel dropdown notifikasi (navbar) — hanya halaman yang memuat tailwind.css */
+  .dropdown-menu.notif-dropdown {
+    min-width: 0;
+    width: min(280px, calc(100vw - 2rem));
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.1);
+  }
+
+  .notif-dropdown__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #e8e8ec;
+  }
+
+  .notif-dropdown__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--bs-body-color);
+    margin: 0;
+  }
+
+  .notif-dropdown__link-all {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--bs-body-color);
+    text-decoration: none;
+  }
+
+  .notif-dropdown__link-all:hover {
+    text-decoration: underline;
+    @apply text-primary;
+  }
+
+  .notif-dropdown__list {
+    max-height: min(70vh, 420px);
+    overflow-y: auto;
+  }
+
+  .notif-dropdown__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #efeff2;
+    transition: background-color 0.12s ease;
+    white-space: normal;
+    cursor: pointer;
+  }
+
+  .notif-dropdown__item:last-child {
+    border-bottom: none;
+  }
+
+  .notif-dropdown__avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+  }
+
+  .notif-dropdown__avatar img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+
+  .notif-dropdown__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .notif-dropdown__subject {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0 0 0.25rem;
+    color: var(--bs-body-color);
+  }
+
+  /* Potong teks panjang: ±2 baris (~70–80 huruf latin tipikal); ellipsis di akhir */
+  .notif-dropdown__message {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+    margin: 0 0 0.35rem;
+    color: #6b7280;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    word-break: break-word;
+  }
+
+  .notif-dropdown__time {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 12px;
+    font-weight: 400;
+    color: #9ca3af;
+  }
+
+  .notif-dropdown__time .bi {
+    font-size: 0.85em;
+    opacity: 0.85;
+  }
+
+  .notif-dropdown__unread-dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+  }
+
+  /* Titik unread di tombol lonceng navbar — bentuk sama .notif-dropdown__unread-dot, tanpa margin daftar */
+  .top-navbar .nav-notif-trigger .notif-dropdown__unread-dot {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    margin-top: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .notif-dropdown__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.65rem;
+  }
+
+  .notif-dropdown__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.85rem;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.25;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  }
+
+  .notif-dropdown__btn--outline {
+    background: #ffffff;
+    border-color: #d1d5db;
+    color: #111827;
+  }
+
+  .notif-dropdown__btn--outline:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+  }
+
+  .notif-dropdown__btn--danger {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #ffffff;
+  }
+
+  .notif-dropdown__btn--danger:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+  }
+
+  a.notif-dropdown__item:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(9, 9, 11, 0.18);
+  }
+
+  .notif-dropdown .notif-item:hover,
+  .notif-dropdown .notif-item:focus {
+    color: var(--bs-body-color);
+    background: #e4e4e8;
+  }
+
+  .notif-dropdown .notif-item:hover .text-muted,
+  .notif-dropdown .notif-item:focus .text-muted {
+    color: var(--bs-secondary-color) !important;
+  }
+
+  .dark .dropdown-menu.notif-dropdown {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .dark .notif-dropdown__header {
+    border-bottom-color: var(--border-color);
+  }
+
+  .dark .notif-dropdown__item {
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .dark .notif-dropdown__message {
+    color: #94a3b8;
+  }
+
+  .dark .notif-dropdown__time {
+    color: #64748b;
+  }
+
+  .dark .notif-dropdown .notif-item:hover,
+  .dark .notif-dropdown .notif-item:focus {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f1f5f9;
+  }
+
+  .dark .notif-dropdown__btn--outline {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--border-color);
+    color: #e5e7eb;
+  }
+
+  .dark .notif-dropdown__btn--outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /*
+   * Navbar horizontal layout — didefinisikan di sini (bukan hanya di style.css yang di-import)
+   * supaya aturan tidak hilang dari bundle Tailwind v4 saat build/minify.
+   */
+  .top-navbar-start {
+    flex-shrink: 0;
+    gap: 1rem;
+  }
+
+  .top-navbar-end {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1 1 auto;
+    gap: 0.35rem;
+    min-width: 0;
+    margin-left: 0.9rem;
+  }
+
+  .top-navbar-search {
+    flex: 0 1 260px;
+    max-width: min(260px, 46vw);
+    min-width: 120px;
+    width: auto;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  /*
+   * Ikon SVG di sidebar: batasi ukuran di sini (bukan hanya di style.css),
+   * karena selector svg saat import dapat tidak termuat di bundle Tailwind minify.
+   */
+  .sidebar-nav .nav-link svg.sidebar-nav-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    max-width: 1.1rem;
+    max-height: 1.1rem;
+    flex-shrink: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    opacity: 0.9;
+    transition: color 0.15s ease, opacity 0.15s ease;
+  }
+
+  .sidebar-nav .nav-link:hover svg.sidebar-nav-icon,
+  .sidebar-nav .nav-link:focus-visible svg.sidebar-nav-icon {
+    color: #09090b;
+    opacity: 1;
+  }
+
+  .sidebar-nav .nav-link.active svg.sidebar-nav-icon {
+    color: #ffffff;
+    opacity: 1;
+  }
+
+  .sidebar-nav .nav-link.active:hover svg.sidebar-nav-icon,
+  .sidebar-nav .nav-link.active:focus-visible svg.sidebar-nav-icon {
+    color: #ffffff;
+  }
+
+  .dark .sidebar-nav .nav-link:hover svg.sidebar-nav-icon,
+  .dark .sidebar-nav .nav-link:focus-visible svg.sidebar-nav-icon {
+    color: #09090b;
+  }
+
+  .dark .sidebar-nav .nav-link.active svg.sidebar-nav-icon,
+  .dark .sidebar-nav .nav-link.active:hover svg.sidebar-nav-icon,
+  .dark .sidebar-nav .nav-link.active:focus-visible svg.sidebar-nav-icon {
+    color: #ffffff;
+  }
+
+  /*
+   * Donut "Distribusi pembayaran" (referensi: Store visits by source)
+   * Didefinisikan di sini supaya tidak ter-drop saat Tailwind memproses @import style.css.
+   */
+  .dash-pie-card__head {
+    padding-bottom: 0.5rem;
+  }
+
+  .dash-pie-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    gap: 0;
+  }
+
+  .pie-wrap {
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .pie-wrap--donut {
+    max-width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+  }
+
+  .dash-pie-title {
+    font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: #09090b;
+    letter-spacing: -0.01em;
+  }
+
+  .pie-donut-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    line-height: 1.1;
+    max-width: 5.5rem;
+    z-index: 2;
+  }
+
+  /*
+   * Tooltip HTML Chart.js (chart batang / lainnya).
+   */
+  #chartjs-tooltip {
+    z-index: 100 !important;
+  }
+
+  /* Tooltip kustom donut (plugin external) — selalu di atas angka pusat */
+  .pie-wrap--donut {
+    position: relative;
+  }
+
+  /* Tooltip donut kompak: swatch | label | nilai — radius lebih ketat (bukan pill penuh) */
+  .pie-external-tooltip {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 120;
+    pointer-events: none;
+    min-width: 0;
+    max-width: 15rem;
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+    line-height: 1.25;
+    border: none;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.09), 0 1px 4px rgba(15, 23, 42, 0.05);
+  }
+
+  .pie-external-tooltip__row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .pie-external-tooltip__swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .pie-external-tooltip__label {
+    flex: 1;
+    min-width: 0;
+    font-weight: 400;
+    font-size: 11px;
+    color: #64748b;
+    text-align: left;
+  }
+
+  .pie-external-tooltip__value {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding-left: 0.45rem;
+    font-weight: 600;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: #09090b;
+  }
+
+  [data-theme="dark"] .pie-external-tooltip {
+    background: #1e293b;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 1px 5px rgba(0, 0, 0, 0.22);
+  }
+
+  [data-theme="dark"] .pie-external-tooltip__label {
+    color: #94a3b8;
+  }
+
+  [data-theme="dark"] .pie-external-tooltip__value {
+    color: #f8fafc;
+  }
+
+  .pie-donut-center__value {
+    display: block;
+    font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #09090b;
+    letter-spacing: -0.04em;
+  }
+
+  .pie-donut-center__label {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.25;
+    font-weight: 400;
+    color: #64748b;
+  }
+
+  .pie-legend {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .pie-legend--inline {
+    margin-top: 1.15rem;
+  }
+
+  .pie-legend__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.65rem 1.25rem;
+  }
+
+  .pie-legend__row--all {
+    width: 100%;
+    row-gap: 0.5rem;
+  }
+
+  .pie-legend__row--3 .pie-legend__item {
+    min-width: 4.75rem;
+  }
+
+  .pie-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .pie-legend__swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .pie-legend__label {
+    font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    font-style: normal;
+    color: #64748b;
+  }
+
+  .dash-foot-legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  .dash-foot-legend-swatch--laki {
+    background: #ff5700;
+  }
+
+  .dash-foot-legend-swatch--perempuan {
+    background: #00a389;
+  }
+
+  /* Chart.js tooltip HTML bisa meluber; hindari clip dari .chart-wrap */
+  .chart-wrap--tooltip-safe {
+    overflow: visible;
+  }
+}
+
+@layer components {
+  [data-theme="dark"] .dash-pie-title {
+    color: #f1f5f9;
+  }
+
+  [data-theme="dark"] .pie-donut-center__value {
+    color: #f8fafc;
+  }
+
+  [data-theme="dark"] .pie-donut-center__label {
+    color: #94a3b8;
+  }
+
+  [data-theme="dark"] .pie-legend__label {
+    color: #e2e8f0;
+  }
+
+  [data-theme="dark"] .dash-foot-legend-swatch--laki {
+    background: #ff7a3d;
+  }
+
+  [data-theme="dark"] .dash-foot-legend-swatch--perempuan {
+    background: #2dd4bf;
+  }
+
+}
+
+
+/* Legacy styles (previously loaded via assets/css/style.css). */
+@import "./style.css";
+
+/* Form search navbar + mobile: teks & placeholder selalu normal (400) */
+.top-navbar-search-input,
+.top-navbar-search-input::placeholder,
+.mobile-navbar-search-strip .top-navbar-search-input,
+.mobile-navbar-search-strip .top-navbar-search-input::placeholder {
+  font-weight: 400;
+}
+
+/* style.css memakai .chart-wrap { overflow: hidden }; tooltip & label perlu tidak terpotong */
+.chart-wrap.chart-wrap--tooltip-safe {
+  overflow: visible;
+}
+
+/* Kartu chart kehadiran — lebih kompak (mirip referensi kecil) */
+.dash-chart-card--compact__head {
+  padding: 0.75rem 0.75rem 0;
+}
+
+@media (min-width: 640px) {
+  .dash-chart-card--compact__head {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Dashboard bento: chart kehadiran melebar 2 kolom (setara md:col-span-2) pada grid 3 kolom */
+@media (min-width: 48rem) {
+  .dash-dashboard-bento:not(.dash-dashboard-bento--charts-equal) > .dash-dashboard-bento--chart-wide {
+    grid-column: span 2 / span 2;
+  }
+}
+
+/* Grafik garis dual-series minimal (border kartu + area chart tanpa sumbu) */
+.dash-line-chart-card.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+}
+
+.dark .dash-line-chart-card.card,
+[data-theme="dark"] .dash-line-chart-card.card {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #09090b;
+}
+
+.dash-line-chart-card .card-body {
+  padding: 1.5rem;
+}
+
+.dash-line-chart-card__export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.375rem 0.65rem;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #475569;
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.dash-line-chart-card__export:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #09090b;
+}
+
+.dark .dash-line-chart-card__export,
+[data-theme="dark"] .dash-line-chart-card__export {
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.dark .dash-line-chart-card__export:hover,
+[data-theme="dark"] .dash-line-chart-card__export:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #f1f5f9;
+}
+
+.dash-line-chart-card__chart-wrap {
+  min-height: 220px;
+  height: 240px;
+}
+
+/* Di grid sejajar tabel pembayaran: area chart mengisi sisa tinggi baris */
+.dash-line-chart-card--bento.card {
+  min-height: 100%;
+}
+
+.dash-line-chart-card--bento .card-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.dash-line-chart-card--bento .dash-line-chart-card__chart-wrap {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 220px;
+}
+
+.dash-line-chart-card__chart-wrap > canvas {
+  display: block;
+  max-height: 100%;
+}
+
+/* Judul kolom kiri; tab di kolom auto — selalu rata kanan tepi kartu */
+.dash-chart-card--head-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  column-gap: 0.75rem;
+  row-gap: 0.5rem;
+}
+
+.dash-chart-card--head-row .dash-chart-title {
+  min-width: 0;
+}
+
+.dash-chart-card--head-row .dash-segment-tabs {
+  justify-self: end;
+  flex-shrink: 0;
+}
+
+.dash-chart-card--compact .dash-chart-title {
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.dash-chart-card--compact .dash-chart-subtitle,
+.dash-chart-card--compact__subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 0.35rem;
+  line-height: 1.4;
+}
+
+.dash-chart-card--compact__body {
+  padding: 0.5rem 0.75rem 0.35rem;
+}
+
+@media (min-width: 640px) {
+  .dash-chart-card--compact__body {
+    padding: 0.5rem 1rem 0.35rem;
+  }
+}
+
+.dash-chart-card--compact .dash-segment-tabs {
+  padding: 0.2rem;
+  gap: 0.15rem;
+}
+
+.dash-chart-card--compact .dash-segment-tabs button {
+  padding: 0.3rem 0.65rem;
+  font-size: 12px;
+}
+
+/* Isi tinggi kartu = area chart memanjang sejajar kartu pie */
+.dash-chart-card--compact.d-flex .dash-chart-card--compact__chart {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/*
+ * Tailwind v4 meng-generate .w-100 / .h-100 di @layer utilities sebagai
+ * width/height = spacing×100 (bukan 100%). Itu menimpa layer components
+ * kita yang meniru Bootstrap. Tanpa perbaikan ini, header kartu dst. hanya
+ * selebar ~25rem sehingga tab terlihat “di tengah” kartu.
+ */
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Judul halaman — selaras dengan Dashboard (margin & tipografi) */
+body.dashboard-page .main-content h1.page-title {
+  margin-top: 0.85rem;
+  margin-bottom: 1.65rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-size: 24px;
+  line-height: 1.2;
+  color: #09090b;
+}
+
+.dark body.dashboard-page .main-content h1.page-title {
+  color: #f1f5f9;
+}
+
+/* Kartu pembayaran terbaru — border + radius satu bingkai untuk seluruh blok */
+.dash-latest-payments {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: none !important;
+}
+
+.dark .dash-latest-payments,
+[data-theme="dark"] .dash-latest-payments {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: #09090b;
+}
+
+/* Blok tabel: jarak ke toolbar diselaraskan (gap vertikal ≈ padding atas toolbar) */
+.dash-latest-payments__table-shell {
+  margin-top: 0;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-bottom: 0.25rem;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent;
+  padding-top: 0;
+}
+
+.dark .dash-latest-payments__table-shell {
+  background: transparent;
+}
+
+.dash-latest-payments__title {
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: #09090b;
+}
+
+.dark .dash-latest-payments__title,
+[data-theme="dark"] .dash-latest-payments__title {
+  color: #f1f5f9;
+}
+
+.dash-latest-payments__subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Judul kartu dashboard seragam 16px (mis. Komponen UI) */
+.dash-card-heading {
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #09090b;
+}
+
+.dark .dash-card-heading,
+[data-theme="dark"] .dash-card-heading {
+  color: #f1f5f9;
+}
+
+.dash-card-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Toolbar search — lebar proporsional (tidak melebar penuh) */
+.dash-latest-payments__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 1 auto;
+  width: auto;
+  max-width: min(14rem, 100%);
+  min-width: min(9rem, 100%);
+}
+
+@media (min-width: 640px) {
+  .dash-latest-payments__search {
+    max-width: min(15rem, 100%);
+    min-width: 10.5rem;
+  }
+}
+
+/* Search + tombol Tambah: kolom search dibatasi, tombol auto */
+.dash-latest-payments__toolbar > .d-flex.flex-shrink-0:has(.btn) {
+  display: grid;
+  grid-template-columns: minmax(0, min(14rem, 100%)) auto;
+  gap: 0.625rem;
+  align-items: center;
+  width: auto;
+  max-width: 100%;
+  margin-inline-start: auto;
+}
+
+@media (min-width: 640px) {
+  .dash-latest-payments__toolbar > .d-flex.flex-shrink-0:has(.btn) {
+    grid-template-columns: minmax(0, min(15rem, 100%)) auto;
+  }
+}
+
+.dash-latest-payments__toolbar > .d-flex.flex-shrink-0:has(.btn) > .dash-latest-payments__search {
+  max-width: none;
+  min-width: 0;
+  width: 100%;
+}
+
+.dash-latest-payments__toolbar > .d-flex.flex-shrink-0:has(.btn) > .btn {
+  width: auto;
+  min-width: 0;
+  min-height: 2.5rem;
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0.5rem !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+  justify-self: end;
+}
+
+/* Baris toolbar hanya search (tanpa tombol): tetap flex */
+.dash-latest-payments__toolbar > .d-flex.flex-shrink-0:not(:has(.btn)) {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* Toolbar: padding bawah = padding atas (1.25rem / setara pt-5) */
+.dash-latest-payments__toolbar.d-flex {
+  padding-bottom: 1.25rem !important;
+}
+
+.dash-latest-payments__search-icon {
+  position: absolute;
+  left: 0.75rem;
+  z-index: 1;
+  font-size: 1rem;
+  line-height: 1;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.dark .dash-latest-payments__search-icon,
+[data-theme="dark"] .dash-latest-payments__search-icon {
+  color: #94a3b8;
+}
+
+.dash-latest-payments__search .form-control.dash-latest-payments__filter-input,
+.dash-latest-payments__search .dash-latest-payments__search-input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.875rem 0.5rem 2.5rem !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+  font-weight: 400 !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid #e4e4e8 !important;
+  background-color: #ffffff !important;
+  color: #09090b;
+  box-shadow: none !important;
+}
+
+.dash-latest-payments__search .form-control.dash-latest-payments__filter-input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+  font-weight: 400;
+}
+
+.dash-latest-payments__search .form-control.dash-latest-payments__filter-input:focus {
+  outline: none !important;
+  border-color: #27272b !important;
+  box-shadow: 0 0 0 2px #929295 !important;
+}
+
+.dark .dash-latest-payments__search .form-control.dash-latest-payments__filter-input,
+.dark .dash-latest-payments__search .dash-latest-payments__search-input,
+[data-theme="dark"] .dash-latest-payments__search .form-control.dash-latest-payments__filter-input,
+[data-theme="dark"] .dash-latest-payments__search .dash-latest-payments__search-input {
+  background-color: #18181b !important;
+  border-color: #e4e4e8 !important;
+  color: #f1f5f9 !important;
+  font-weight: 400 !important;
+}
+
+.dark .dash-latest-payments__search .form-control.dash-latest-payments__filter-input::placeholder,
+[data-theme="dark"] .dash-latest-payments__search .form-control.dash-latest-payments__filter-input::placeholder {
+  color: #64748b;
+  font-weight: 400;
+}
+
+.dark .dash-latest-payments__search .form-control.dash-latest-payments__filter-input:focus,
+[data-theme="dark"] .dash-latest-payments__search .form-control.dash-latest-payments__filter-input:focus {
+  background-color: #18181b !important;
+  border-color: #27272b !important;
+  box-shadow: 0 0 0 2px #929295 !important;
+}
+
+/* Lebar mengikuti kolom grid (2/3 seperti kartu Statistik kehadiran); tanpa max-width tambahan */
+.dash-latest-payments__table-wrap {
+  max-width: 100%;
+}
+
+.table-responsive.dash-latest-payments__table-wrap {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* Spesifisitas ganda agar text-align:center tidak kalah dari .dash-latest-payments__th { text-align:left } */
+.dash-latest-payments__th.dash-latest-payments__th--row-actions,
+.dash-latest-payments__td.dash-latest-payments__td--row-actions {
+  width: 4rem;
+  min-width: 4rem;
+  max-width: 4rem;
+  padding-inline-start: 0.5rem;
+  padding-inline-end: 1rem;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.dash-latest-payments__td.dash-latest-payments__td--row-actions .dash-row-menu {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-row-menu {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.dash-row-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.dash-row-menu__trigger:hover {
+  background-color: rgba(9, 9, 11, 0.06);
+}
+
+.dash-row-menu__trigger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.14);
+}
+
+.dash-row-menu__trigger-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.dark .dash-row-menu__trigger:hover,
+[data-theme="dark"] .dash-row-menu__trigger:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .dash-row-menu__trigger:focus-visible,
+[data-theme="dark"] .dash-row-menu__trigger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.dash-row-menu__content {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 50;
+  margin-top: 0.25rem;
+  min-width: 8rem;
+  overflow: hidden;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #09090b;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.dark .dash-row-menu__content,
+[data-theme="dark"] .dash-row-menu__content {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: #09090b;
+  color: #fafafa;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.4),
+    0 2px 4px -2px rgb(0 0 0 / 0.3);
+}
+
+.dash-row-menu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  border: none;
+  border-radius: 0.125rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.dash-row-menu__item:hover {
+  background-color: rgba(9, 9, 11, 0.06);
+}
+
+.dark .dash-row-menu__item:hover,
+[data-theme="dark"] .dash-row-menu__item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dash-row-menu__item--destructive {
+  color: #b91c1c;
+}
+
+.dash-row-menu__item--destructive:hover {
+  background-color: rgba(185, 28, 28, 0.08);
+}
+
+.dark .dash-row-menu__item--destructive,
+[data-theme="dark"] .dash-row-menu__item--destructive {
+  color: #fca5a5;
+}
+
+.dash-latest-payments__table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.dash-latest-payments__col--check {
+  width: 2rem;
+}
+
+.dash-latest-payments__col--name {
+  width: 22%;
+}
+
+.dash-latest-payments__col--email {
+  width: 34%;
+}
+
+.dash-latest-payments__col--amount {
+  width: 18%;
+}
+
+.dash-latest-payments__col--status {
+  width: 14%;
+}
+
+.dash-latest-payments__col--action {
+  width: 4rem;
+}
+
+.dash-latest-payments__th {
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #09090b;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc !important;
+  background-image: none !important;
+  box-sizing: border-box;
+}
+
+.dash-latest-payments__th.text-end {
+  white-space: normal;
+}
+
+.dash-latest-payments__th:has(> .dash-latest-payments__checkbox),
+.dash-latest-payments__th--check:has(> .dash-latest-payments__checkbox) {
+  padding-inline-end: 0;
+}
+
+.dash-latest-payments__table thead tr:first-child th:first-child {
+  border-top-left-radius: 0.75rem;
+}
+
+.dash-latest-payments__table thead tr:first-child th:last-child {
+  border-top-right-radius: 0.75rem;
+}
+
+.dash-latest-payments__th-sort-btn {
+  margin: 0;
+  margin-inline-start: -0.75rem;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  white-space: nowrap;
+  outline: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.dash-latest-payments__th-sort-btn:hover {
+  background-color: rgba(9, 9, 11, 0.06);
+}
+
+.dash-latest-payments__th-sort-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.14);
+}
+
+.dash-latest-payments__th-sort-btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.dash-latest-payments__th-sort-svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.dash-latest-payments__th-sort-svg--active {
+  opacity: 1;
+}
+
+.dash-latest-payments__th--check {
+  width: 2rem;
+  padding-inline-start: 0.75rem;
+}
+
+.dark .dash-latest-payments__th,
+[data-theme="dark"] .dash-latest-payments__th {
+  color: #fafafa;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: #18181b !important;
+  background-image: none !important;
+}
+
+.dark .dash-latest-payments__th-sort-btn:hover,
+[data-theme="dark"] .dash-latest-payments__th-sort-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .dash-latest-payments__th-sort-btn:focus-visible,
+[data-theme="dark"] .dash-latest-payments__th-sort-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.dash-latest-payments__td {
+  padding: 0.75rem 1rem;
+  font-size: 14px;
+  font-weight: 400;
+  color: #09090b;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+  border-top: none;
+}
+
+.dash-latest-payments__table tbody tr:last-child .dash-latest-payments__td {
+  border-bottom: none;
+}
+
+.dark .dash-latest-payments__td,
+[data-theme="dark"] .dash-latest-payments__td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background-color: #09090b;
+}
+
+.dash-latest-payments__td--muted {
+  color: #64748b;
+}
+
+.dark .dash-latest-payments__td--muted {
+  color: #94a3b8;
+}
+
+.dash-latest-payments__td--clip {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-latest-payments__name {
+  font-weight: 400;
+  color: inherit;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-latest-payments__tr:hover .dash-latest-payments__td {
+  background: #f8fafc;
+}
+
+.dark .dash-latest-payments__tr:hover .dash-latest-payments__td,
+[data-theme="dark"] .dash-latest-payments__tr:hover .dash-latest-payments__td {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dash-latest-payments__checkbox {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  border-radius: 0.25rem;
+  border: 1px solid #cbd5e1;
+  accent-color: #09090b;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.dark .dash-latest-payments__checkbox {
+  border-color: rgba(148, 163, 184, 0.5);
+  accent-color: #94a3b8;
+}
+
+/* Pill status badges — outline shadcn-style (success lime / pending yellow / failed red) */
+.dash-pay-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  flex-shrink: 0;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* Success — lime (Checked-In / Aktif / …) */
+.dash-pay-status--success {
+  border-color: #bef264;
+  background: #f7fee7;
+  color: #4d7c0f;
+}
+
+/* Pending / processing — yellow */
+.dash-pay-status--processing {
+  border-color: #fde047;
+  background: #fefce8;
+  color: #a16207;
+}
+
+/* Failed — red outline */
+.dash-pay-status--failed {
+  border-color: #fca5a5;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.dark .dash-pay-status--success,
+[data-theme="dark"] .dash-pay-status--success {
+  border-color: #365314;
+  background: #1a2e05;
+  color: #bef264;
+}
+
+.dark .dash-pay-status--processing,
+[data-theme="dark"] .dash-pay-status--processing {
+  border-color: #854d0e;
+  background: #422006;
+  color: #fde047;
+}
+
+.dark .dash-pay-status--failed,
+[data-theme="dark"] .dash-pay-status--failed {
+  border-color: #7f1d1d;
+  background: #450a0a;
+  color: #fca5a5;
+}
+
+.dash-latest-payments__footer {
+  border-top: 1px solid #e2e8f0;
+}
+
+.dark .dash-latest-payments__footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.dash-latest-payments__selection {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.dash-latest-payments__page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  width: auto;
+  padding: 0 0.45rem;
+  border: 1px solid var(--input-border, #e4e4e8);
+  border-radius: 0.375rem;
+  background: #ffffff;
+  color: #09090b;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+/* Hanya ikon (first / prev / next / last) — ukuran 9 per referensi shadcn */
+.dash-latest-payments__page-btn:has(> svg:only-child) {
+  width: 2.25rem;
+  padding: 0;
+}
+
+.dash-latest-payments__page-btn:hover:not(:disabled) {
+  background: #f4f4f5;
+  border-color: var(--input-border, #e4e4e8);
+  color: #09090b;
+}
+
+.dash-latest-payments__page-btn:focus-visible {
+  outline: none;
+  border-color: #d4d4d8;
+  box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.12);
+}
+
+.dash-latest-payments__page-btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dash-latest-payments__page-btn .dash-page-btn-lucide,
+.dash-latest-payments__page-btn svg[aria-hidden="true"] {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.dash-latest-payments__page-btn.is-active {
+  border-color: #09090b;
+  background: #09090b;
+  color: #fff;
+}
+
+.dark .dash-latest-payments__page-btn.is-active,
+[data-theme="dark"] .dash-latest-payments__page-btn.is-active {
+  border-color: #f1f5f9;
+  background: #f1f5f9;
+  color: #09090b;
+}
+
+.dark .dash-latest-payments__page-btn,
+[data-theme="dark"] .dash-latest-payments__page-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  box-shadow: none;
+}
+
+.dark .dash-latest-payments__page-btn:hover:not(:disabled),
+[data-theme="dark"] .dash-latest-payments__page-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.dark .dash-latest-payments__page-btn:focus-visible,
+[data-theme="dark"] .dash-latest-payments__page-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* —— Dashboard: kartu ringkasan bertema (cyan / hijau / violet / amber) —— */
+.stat-cards-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .stat-cards-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .stat-cards-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.125rem;
+  }
+}
+
+.dash-mini-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--mini-border);
+  background: var(--mini-bg);
+  color: var(--mini-text);
+  box-shadow: none;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.dash-mini-stat:hover {
+  transform: translateY(-2px);
+  border-color: var(--mini-border-hover);
+}
+
+.dash-mini-stat__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.dash-mini-stat__icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: var(--mini-icon-bg);
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dash-mini-stat__menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--mini-menu);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.dash-mini-stat__menu:hover {
+  background: var(--mini-menu-hover-bg);
+  color: var(--mini-text);
+}
+
+.dash-mini-stat__label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--mini-label);
+}
+
+.dash-mini-stat__value,
+.dash-mini-stat .stat-number {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--mini-text) !important;
+}
+
+.dash-mini-stat__sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.2rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--mini-divider);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.dash-mini-stat__sub-muted {
+  color: var(--mini-sub-muted);
+  font-weight: 400;
+}
+
+.dash-mini-stat__sub-strong {
+  font-weight: 600;
+}
+
+.dash-mini-stat__sub-strong--up {
+  color: var(--mini-strong-up);
+}
+
+.dash-mini-stat__sub-strong--down {
+  color: var(--mini-strong-down);
+}
+
+/* Tema cyan / teal */
+.dash-mini-stat--cyan {
+  --mini-bg: #ecfeff;
+  --mini-border: #a5f3fc;
+  --mini-border-hover: #67e8f9;
+  --mini-icon-bg: #0d9488;
+  --mini-text: #134e4a;
+  --mini-label: #0f766e;
+  --mini-menu: #64748b;
+  --mini-menu-hover-bg: rgba(13, 148, 136, 0.1);
+  --mini-divider: rgba(13, 148, 136, 0.18);
+  --mini-sub-muted: #64748b;
+  --mini-strong-up: #047857;
+  --mini-strong-down: #b91c1c;
+}
+
+/* Tema hijau */
+.dash-mini-stat--green {
+  --mini-bg: #f0fdf4;
+  --mini-border: #bbf7d0;
+  --mini-border-hover: #86efac;
+  --mini-icon-bg: #15803d;
+  --mini-text: #14532d;
+  --mini-label: #166534;
+  --mini-menu: #64748b;
+  --mini-menu-hover-bg: rgba(21, 128, 61, 0.1);
+  --mini-divider: rgba(21, 128, 61, 0.18);
+  --mini-sub-muted: #64748b;
+  --mini-strong-up: #047857;
+  --mini-strong-down: #b91c1c;
+}
+
+/* Tema pink / rose — kartu Tenaga Pengajar (light): #fcebf5 + radial #fef4fa */
+.dash-mini-stat--violet {
+  --mini-bg: #fcebf5;
+  --mini-border: #fccfe9;
+  --mini-border-hover: #f9a8d4;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #fef4fa 0%, rgba(254, 244, 250, 0.5) 48%, transparent 72%),
+    #fcebf5 !important;
+  --mini-icon-bg: #a3004c;
+  --mini-text: #861043;
+  --mini-label: #be185d;
+  --mini-menu: #64748b;
+  --mini-menu-hover-bg: rgba(219, 39, 119, 0.1);
+  --mini-divider: rgba(219, 39, 119, 0.18);
+  --mini-sub-muted: #64748b;
+  --mini-strong-up: #047857;
+  --mini-strong-down: #b91c1c;
+}
+
+.dash-mini-stat--violet .dash-mini-stat__value,
+.dash-mini-stat--violet .stat-number {
+  color: #861043 !important;
+}
+
+.dark .dash-mini-stat--violet .dash-mini-stat__value,
+.dark .dash-mini-stat--violet .stat-number {
+  color: #f6339a !important;
+}
+
+/* Tema amber / kuning — kartu Lunas (light): #f7f1c9 + radial #fefce4 */
+.dash-mini-stat--amber {
+  --mini-bg: #f7f1c9;
+  --mini-border: #ffe336;
+  --mini-border-hover: #fcd34d;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #fefce4 0%, rgba(254, 252, 228, 0.55) 48%, transparent 72%),
+    #f7f1c9 !important;
+  --mini-icon-bg: #894b00;
+  --mini-text: #733e0a;
+  --mini-label: #b45309;
+  --mini-menu: #64748b;
+  --mini-menu-hover-bg: rgba(217, 119, 6, 0.12);
+  --mini-divider: rgba(217, 119, 6, 0.22);
+  --mini-sub-muted: #64748b;
+  --mini-strong-up: #047857;
+  --mini-strong-down: #b91c1c;
+}
+
+.dash-mini-stat--amber .dash-mini-stat__value,
+.dash-mini-stat--amber .stat-number {
+  color: #733e0a !important;
+}
+
+.dark .dash-mini-stat--amber .dash-mini-stat__value,
+.dark .dash-mini-stat--amber .stat-number {
+  color: #f0b100 !important;
+}
+
+/* Kartu "Jumlah tagihan" (light) — dasar #dbfbfe + radial #eafdfe, border #53eafd, ikon #005f78 */
+.dash-mini-stat.dash-mini-stat--tagihan {
+  padding: 1.25rem 1.35rem;
+  border-radius: 16px;
+  --mini-border: #53eafd;
+  --mini-border-hover: #2ecce6;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #eafdfe 0%, rgba(234, 253, 254, 0.5) 48%, transparent 72%),
+    #dbfbfe !important;
+  --mini-icon-bg: #005f78;
+  --mini-text: #134e4a;
+  --mini-label: #3d6d7a;
+  --mini-menu: #5b7c88;
+  --mini-menu-hover-bg: rgba(83, 234, 253, 0.28);
+  --mini-divider: rgba(83, 234, 253, 0.45);
+  --mini-sub-muted: #5b7c88;
+  --mini-strong-up: #0f766e;
+  --mini-strong-down: #b91c1c;
+}
+
+.dash-mini-stat--tagihan .dash-mini-stat__label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.dash-mini-stat--tagihan .dash-mini-stat__value,
+.dash-mini-stat--tagihan .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #104e64 !important;
+}
+
+.dark .dash-mini-stat--tagihan .dash-mini-stat__value,
+.dark .dash-mini-stat--tagihan .stat-number {
+  color: #068ecf !important;
+}
+
+.dash-mini-stat--tagihan .dash-mini-stat__sub {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* Kartu "Murid aktif" (light) — dasar #e3fcec + radial #f0fdf4, border #7bf1a8 */
+.dash-mini-stat.dash-mini-stat--murid-aktif {
+  padding: 1.25rem 1.35rem;
+  border-radius: 16px;
+  --mini-border: #7bf1a8;
+  --mini-border-hover: #4ade80;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #f0fdf4 0%, rgba(240, 253, 244, 0.5) 48%, transparent 72%),
+    #e3fcec !important;
+  --mini-icon-bg: #016630;
+  --mini-text: #14532d;
+  --mini-label: #3d6b4f;
+  --mini-menu: #5b7c88;
+  --mini-menu-hover-bg: rgba(123, 241, 168, 0.32);
+  --mini-divider: rgba(123, 241, 168, 0.45);
+  --mini-sub-muted: #5b7c88;
+  --mini-strong-up: #047857;
+  --mini-strong-down: #b91c1c;
+}
+
+.dash-mini-stat--murid-aktif .dash-mini-stat__label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.dash-mini-stat--murid-aktif .dash-mini-stat__value,
+.dash-mini-stat--murid-aktif .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0d542b !important;
+}
+
+.dark .dash-mini-stat--murid-aktif .dash-mini-stat__value,
+.dark .dash-mini-stat--murid-aktif .stat-number {
+  color: #00c950 !important;
+}
+
+.dash-mini-stat--murid-aktif .dash-mini-stat__sub {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+@media (min-width: 1440px) {
+  .dash-mini-stat {
+    padding: 1.2rem 1.35rem;
+  }
+
+  .dash-mini-stat__value,
+  .dash-mini-stat .stat-number {
+    font-size: 1.875rem;
+  }
+}
+
+/* Dark mode */
+.dark .dash-mini-stat--cyan {
+  --mini-bg: rgba(13, 148, 136, 0.14);
+  --mini-border: rgba(45, 212, 191, 0.35);
+  --mini-border-hover: rgba(45, 212, 191, 0.55);
+  --mini-icon-bg: #0f766e;
+  --mini-text: #ccfbf1;
+  --mini-label: #99f6e4;
+  --mini-menu: #94a3b8;
+  --mini-menu-hover-bg: rgba(255, 255, 255, 0.08);
+  --mini-divider: rgba(153, 246, 232, 0.2);
+  --mini-sub-muted: #94a3b8;
+  --mini-strong-up: #6ee7b7;
+  --mini-strong-down: #fca5a5;
+}
+
+.dark .dash-mini-stat.dash-mini-stat--tagihan {
+  --mini-border: #053345;
+  --mini-border-hover: #0a4a6a;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #0b232e 0%, rgba(11, 35, 46, 0.45) 48%, transparent 72%),
+    #081a24 !important;
+  --mini-icon-bg: #005f78;
+  --mini-text: #ecfeff;
+  --mini-label: #a5f3fc;
+  --mini-menu: #94a3b8;
+  --mini-menu-hover-bg: rgba(83, 234, 253, 0.12);
+  --mini-divider: rgba(83, 234, 253, 0.2);
+  --mini-sub-muted: #94a3b8;
+  --mini-strong-up: #6ee7b7;
+  --mini-strong-down: #fca5a5;
+}
+
+.dark .dash-mini-stat.dash-mini-stat--murid-aktif {
+  --mini-border: #032e15;
+  --mini-border-hover: #054f24;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #0a2517 0%, rgba(10, 37, 23, 0.45) 48%, transparent 72%),
+    #061910 !important;
+  --mini-icon-bg: #016630;
+  --mini-text: #f0fdf4;
+  --mini-label: #bbf7d0;
+  --mini-menu: #94a3b8;
+  --mini-menu-hover-bg: rgba(123, 241, 168, 0.12);
+  --mini-divider: rgba(123, 241, 168, 0.25);
+  --mini-sub-muted: #94a3b8;
+  --mini-strong-up: #6ee7b7;
+  --mini-strong-down: #fca5a5;
+}
+
+.dark .dash-mini-stat--green {
+  --mini-bg: rgba(22, 163, 74, 0.14);
+  --mini-border: rgba(74, 222, 128, 0.35);
+  --mini-border-hover: rgba(74, 222, 128, 0.5);
+  --mini-icon-bg: #166534;
+  --mini-text: #dcfce7;
+  --mini-label: #86efac;
+  --mini-menu: #94a3b8;
+  --mini-menu-hover-bg: rgba(255, 255, 255, 0.08);
+  --mini-divider: rgba(134, 239, 172, 0.22);
+  --mini-sub-muted: #94a3b8;
+  --mini-strong-up: #6ee7b7;
+  --mini-strong-down: #fca5a5;
+}
+
+.dark .dash-mini-stat--violet {
+  --mini-bg: #260616;
+  --mini-border: #510424;
+  --mini-border-hover: #6d0a32;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #390b20 0%, rgba(57, 11, 32, 0.45) 48%, transparent 72%),
+    #260616 !important;
+  --mini-icon-bg: #f6339a;
+  --mini-text: #fce7f3;
+  --mini-label: #fbcfe8;
+  --mini-menu: #94a3b8;
+  --mini-menu-hover-bg: rgba(246, 51, 154, 0.12);
+  --mini-divider: rgba(246, 51, 154, 0.22);
+  --mini-sub-muted: #94a3b8;
+  --mini-strong-up: #6ee7b7;
+  --mini-strong-down: #fca5a5;
+}
+
+.dark .dash-mini-stat--amber {
+  --mini-bg: #201209;
+  --mini-border: #432004;
+  --mini-border-hover: #5c2c08;
+  background:
+    radial-gradient(ellipse 120% 100% at 82% 12%, #301c0a 0%, rgba(48, 28, 10, 0.45) 48%, transparent 72%),
+    #201209 !important;
+  --mini-icon-bg: #894b00;
+  --mini-text: #fef3c7;
+  --mini-label: #fcd34d;
+  --mini-menu: #94a3b8;
+  --mini-menu-hover-bg: rgba(240, 177, 0, 0.12);
+  --mini-divider: rgba(240, 177, 0, 0.22);
+  --mini-sub-muted: #94a3b8;
+  --mini-strong-up: #6ee7b7;
+  --mini-strong-down: #fca5a5;
+}
+
+/* ---------- Auth (login / register / forgot password) ---------- */
+.auth-page {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem 2.5rem;
+  font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #ffffff;
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-page,
+.dark .auth-page {
+  background: #ffffff;
+  color: #09090b;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 27rem;
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.75rem;
+  padding: 2rem 1.75rem 1.75rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+html[data-theme="dark"] .auth-card,
+.dark .auth-card {
+  background: #ffffff;
+  border-color: #e4e4e7;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.auth-title {
+  margin: 0 0 0.5rem;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 32px;
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-title,
+.dark .auth-title {
+  color: #09090b;
+}
+
+/* Register: tanpa subtitle — padding vertikal judul seimbang; jarak ke field = subtitle login */
+.auth-title.auth-title--register {
+  margin: 0 0 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.auth-subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #71717a;
+}
+
+html[data-theme="dark"] .auth-subtitle,
+.dark .auth-subtitle {
+  color: #71717a;
+}
+
+.auth-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.125rem;
+}
+
+.auth-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-label,
+.dark .auth-label {
+  color: #09090b;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-fields-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-fields-block .auth-field {
+  margin-bottom: 0;
+}
+
+.auth-field {
+  margin-bottom: 0;
+}
+
+.auth-card .form-control,
+.auth-card .form-select {
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 0.5rem;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.45;
+  padding: 0.5rem 0.875rem;
+  min-height: 2.5rem;
+  background-color: #ffffff !important;
+  border: 1px solid #e4e4e8 !important;
+  color: #09090b !important;
+  box-shadow: none !important;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.auth-card .form-control:hover:not(:focus),
+.auth-card .form-select:hover:not(:focus) {
+  border-color: #e4e4e8 !important;
+  background-color: #ffffff !important;
+}
+
+.auth-card .form-control::placeholder,
+.auth-card .form-select::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+  font-weight: 400;
+}
+
+.auth-card .form-control:focus,
+.auth-card .form-select:focus {
+  outline: none !important;
+  border-color: #27272b !important;
+  box-shadow: 0 0 0 2px #929295 !important;
+  background-color: #ffffff !important;
+}
+
+/* Auth gelap — border & fokus sama skema global */
+html[data-theme="dark"] .auth-card .form-control,
+html[data-theme="dark"] .auth-card .form-select,
+.dark .auth-card .form-control,
+.dark .auth-card .form-select {
+  background-color: #18181b !important;
+  border-color: #e4e4e8 !important;
+  color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] .auth-card .form-control:hover:not(:focus),
+html[data-theme="dark"] .auth-card .form-select:hover:not(:focus),
+.dark .auth-card .form-control:hover:not(:focus),
+.dark .auth-card .form-select:hover:not(:focus) {
+  border-color: #e4e4e8 !important;
+  background-color: #18181b !important;
+}
+
+html[data-theme="dark"] .auth-card .form-control:focus,
+html[data-theme="dark"] .auth-card .form-select:focus,
+.dark .auth-card .form-control:focus,
+.dark .auth-card .form-select:focus {
+  background-color: #18181b !important;
+  border-color: #27272b !important;
+  box-shadow: 0 0 0 2px #929295 !important;
+  outline: none !important;
+}
+
+html[data-theme="dark"] .auth-card .form-control::placeholder,
+html[data-theme="dark"] .auth-card .form-select::placeholder,
+.dark .auth-card .form-control::placeholder,
+.dark .auth-card .form-select::placeholder {
+  color: #64748b;
+  opacity: 1;
+  font-weight: 400;
+}
+
+.auth-input-icon-wrap {
+  position: relative;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  line-height: 1;
+  color: #64748b;
+  pointer-events: none;
+  z-index: 1;
+}
+
+html[data-theme="dark"] .auth-input-icon,
+.dark .auth-input-icon {
+  color: #94a3b8;
+}
+
+.auth-input-has-icon {
+  padding-left: 2.5rem !important;
+}
+
+.auth-label-row .auth-link {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #09090b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.auth-label-row .auth-link:hover {
+  color: #18181b;
+}
+
+html[data-theme="dark"] .auth-label-row .auth-link,
+.dark .auth-label-row .auth-link {
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-label-row .auth-link:hover,
+.dark .auth-label-row .auth-link:hover {
+  color: #18181b;
+}
+
+.auth-link {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #09090b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.auth-link:hover {
+  color: #18181b;
+}
+
+html[data-theme="dark"] .auth-link,
+.dark .auth-link {
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-link:hover,
+.dark .auth-link:hover {
+  color: #18181b;
+}
+
+.auth-btn-primary {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 0;
+  padding: 8px 12px;
+  border-radius: 0.375rem !important;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease;
+}
+
+.auth-card .btn.btn-primary.auth-btn-primary {
+  background-color: #09090b !important;
+  color: #fafafa !important;
+  border: 1px solid #09090b !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  padding: 8px 12px !important;
+  box-shadow: none;
+}
+
+.auth-card .btn.btn-primary.auth-btn-primary:hover {
+  background-color: #27272a !important;
+  border: 1px solid #09090b !important;
+  box-shadow: 0 0 0 2px #929295 !important;
+  color: #ffffff !important;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2rem 0;
+  padding: 0.375rem 0;
+}
+
+.auth-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e4e4e7;
+}
+
+html[data-theme="dark"] .auth-divider-line,
+.dark .auth-divider-line {
+  background: #e4e4e7;
+}
+
+.auth-divider-text {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #71717a;
+}
+
+html[data-theme="dark"] .auth-divider-text,
+.dark .auth-divider-text {
+  color: #71717a;
+}
+
+.auth-social-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 0;
+  margin-bottom: 0.75rem;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  border-radius: 0.375rem;
+  border: 1px solid #e4e4e7;
+  background: #ffffff;
+  color: #09090b;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-social-btn:last-of-type {
+  margin-bottom: 0;
+}
+
+.auth-social-btn:hover {
+  background: #fafafa;
+  border: 1px solid #09090b;
+  box-shadow: 0 0 0 2px #929295;
+}
+
+html[data-theme="dark"] .auth-social-btn,
+.dark .auth-social-btn {
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-social-btn:hover,
+.dark .auth-social-btn:hover {
+  background: #fafafa;
+  border: 1px solid #09090b;
+  box-shadow: 0 0 0 2px #929295;
+}
+
+.auth-social-btn i {
+  font-size: 1rem;
+}
+
+.auth-footer {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #09090b;
+}
+
+html[data-theme="dark"] .auth-footer,
+.dark .auth-footer {
+  color: #09090b;
+}
+
+.auth-footer a {
+  color: #09090b;
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 20px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.auth-footer a:hover {
+  color: #18181b;
+}
+
+html[data-theme="dark"] .auth-footer a:hover,
+.dark .auth-footer a:hover {
+  color: #18181b;
+}
