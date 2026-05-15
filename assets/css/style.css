@@ -129,20 +129,46 @@ body {
 }
 
 .sidebar-brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
+  line-height: 0;
   background: var(--primary-soft);
   color: var(--primary);
 }
 
-.sidebar-brand-icon .sidebar-brand-svg {
-  width: 1.35rem;
-  height: 1.35rem;
+.sidebar-brand-icon .sidebar-brand-svg,
+.sidebar-brand-icon .sidebar-nav-icon {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  max-width: 1.25rem;
+  max-height: 1.25rem;
   flex-shrink: 0;
+  margin: 0;
+  /* Graduation cap path is visually bottom-heavy in 24×24 viewBox */
+  transform: translate(0.5px, -1.5px);
+}
+
+.sidebar-brand-text {
+  font-size: 14px;
+  line-height: 1.25;
 }
 
 .sidebar-brand-text .fw-bold {
-  font-size: 0.95rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.sidebar-brand-text small,
+.sidebar-brand-text .sidebar-brand-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.25;
 }
 
 .nav-section-label {
@@ -221,13 +247,13 @@ body {
 
 [data-theme="dark"] .sidebar-nav .nav-link:hover,
 [data-theme="dark"] .sidebar-nav .nav-link:focus-visible {
-  background: #e4e4e8;
-  color: #09090b;
+  background: #2f2f31;
+  color: var(--erp-dark-copy, #e4e4e8);
 }
 
 [data-theme="dark"] .sidebar-nav .nav-link:hover i,
 [data-theme="dark"] .sidebar-nav .nav-link:focus-visible i {
-  color: #09090b;
+  color: var(--erp-dark-copy, #e4e4e8);
 }
 
 [data-theme="dark"] .sidebar-nav .nav-link {
@@ -245,7 +271,7 @@ body {
 
 [data-theme="dark"] .sidebar-nav .nav-link.active:hover,
 [data-theme="dark"] .sidebar-nav .nav-link.active:focus-visible {
-  background: #18181b;
+  background: #2f2f31;
   color: var(--erp-dark-copy, #e4e4e8);
 }
 

@@ -777,9 +777,11 @@
     color: #ffffff;
   }
 
+  [data-theme="dark"] .sidebar-nav .nav-link:hover svg.sidebar-nav-icon,
+  [data-theme="dark"] .sidebar-nav .nav-link:focus-visible svg.sidebar-nav-icon,
   .dark .sidebar-nav .nav-link:hover svg.sidebar-nav-icon,
   .dark .sidebar-nav .nav-link:focus-visible svg.sidebar-nav-icon {
-    color: #09090b;
+    color: #e4e4e8;
   }
 
   .dark .sidebar-nav .nav-link.active svg.sidebar-nav-icon,
@@ -2828,7 +2830,7 @@ html[data-theme="dark"] .auth-footer a:hover,
 
 /*
  * Dark mode — unified copy on sidebar menu, tables, charts, pie/donut.
- * Hover sidebar tetap teks gelap di atas latar #e4e4e8 (kontras).
+ * Hover sidebar dark: latar #2f2f31, teks/ikon #e4e4e8.
  */
 [data-theme="dark"],
 .dark {
