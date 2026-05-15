@@ -135,7 +135,7 @@
       const p = Math.min((now - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - p, 3);
       const val = Math.round(start + (target - start) * eased);
-      el.textContent = val.toLocaleString("id-ID");
+      el.textContent = val.toLocaleString("en-US");
       if (p < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -153,8 +153,8 @@
     Chart.defaults.font.size = 12;
   }
 
-  const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-  const weekDays = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const primaryColor = "rgb(115, 93, 255)";
   const boyBarColor = "rgb(115, 93, 255)";
@@ -172,7 +172,7 @@
     return out;
   }
 
-  /** Sample kehadiran: ketiga seri magnitudonya mirip (±beberapa poin). */
+  /** Sample attendance: three series with similar magnitude (within a few points). */
   function getAttendanceData(sort) {
     if (sort === "month") {
       return {
@@ -211,7 +211,7 @@
 
   function buildAttendanceChartOptions() {
     const isDark = doc.getAttribute("data-theme") === "dark";
-    const tickColor = isDark ? "rgba(255,255,255,0.45)" : "rgba(100, 116, 139, 0.85)";
+    const tickColor = isDark ? "#e4e4e8" : "rgba(100, 116, 139, 0.85)";
 
     return {
       responsive: true,
@@ -236,7 +236,7 @@
         },
         tooltip: {
           enabled: true,
-          /* Gelap semi-transparan + teks putih (konsisten di light/dark) */
+          /* Dark semi-transparent + white text (consistent in light/dark) */
           backgroundColor: "rgba(22, 22, 26, 0.88)",
           titleColor: "#ffffff",
           bodyColor: "#ffffff",
@@ -254,7 +254,7 @@
           bodyFont: { family: "'Poppins', sans-serif", size: 12, weight: "400" },
           bodySpacing: 6,
           itemSort: function (a, b) {
-            var order = { Guru: 0, "Siswa Laki-laki": 1, "siswa perempuan": 2 };
+            var order = { Teacher: 0, "Male students": 1, "Female students": 2 };
             return (order[a.dataset.label] ?? 99) - (order[b.dataset.label] ?? 99);
           },
           callbacks: {
@@ -311,7 +311,7 @@
         labels: initial.labels,
         datasets: [
           {
-            label: "Siswa Laki-laki",
+            label: "Male students",
             data: initial.boys,
             backgroundColor: boyBarColor,
             borderRadius: 5,
@@ -319,7 +319,7 @@
             order: 0,
           },
           {
-            label: "siswa perempuan",
+            label: "Female students",
             data: initial.girls,
             backgroundColor: girlBarColor,
             borderRadius: 5,
@@ -328,7 +328,7 @@
           },
           {
             type: "line",
-            label: "Guru",
+            label: "Teacher",
             data: initial.guru,
             borderColor: guruLineColor,
             backgroundColor: "transparent",
@@ -388,7 +388,7 @@
   const pieCtx = document.getElementById("pieChart");
   const pieLegendEl = document.getElementById("pieLegend");
   if (pieCtx && typeof Chart !== "undefined") {
-    const pieLabels = ["Lunas", "Pending", "Terlambat"];
+    const pieLabels = ["Paid", "Pending", "Overdue"];
     const pieData = [62, 24, 14];
     const pieColors = [primaryColor, "#fdba74", "#5eead4"];
 
@@ -437,7 +437,7 @@
     }
   }
 
-  /* ---------- Util + tabel data (Kelas / Murid) — satu bundle ---------- */
+  /* ---------- Utils + data tables (Class / Student) — single bundle ---------- */
   function escapeHtml(s) {
     const d = document.createElement("div");
     d.textContent = s;
@@ -511,9 +511,9 @@
     if (total === 0) return;
 
     if (totalPages <= 1) {
-      addItem({ text: "‹", page: 1, disabled: true, aria: "Sebelumnya" });
+      addItem({ text: "‹", page: 1, disabled: true, aria: "Previous" });
       addItem({ text: "1", page: 1, disabled: false, active: true });
-      addItem({ text: "›", page: 1, disabled: true, aria: "Berikutnya" });
+      addItem({ text: "›", page: 1, disabled: true, aria: "Next" });
       return;
     }
 
@@ -521,7 +521,7 @@
       text: "‹",
       page: currentPage - 1,
       disabled: currentPage <= 1,
-      aria: "Sebelumnya",
+      aria: "Previous",
     });
 
     const maxBtns = 7;
@@ -542,7 +542,7 @@
         page: p,
         disabled: false,
         active: p === currentPage,
-        aria: "Halaman " + p,
+        aria: "Page " + p,
       });
     }
 
@@ -580,22 +580,22 @@
       text: "›",
       page: currentPage + 1,
       disabled: currentPage >= totalPages,
-      aria: "Berikutnya",
+      aria: "Next",
     });
   }
 
   function updatePageInfoText(pageInfo, start, end, total) {
     if (!pageInfo) return;
     if (total === 0) {
-      pageInfo.textContent = "Tidak ada data";
+      pageInfo.textContent = "No data";
     } else {
       const from = start + 1;
       const to = Math.min(end, total);
-      pageInfo.textContent = "Menampilkan " + from + "–" + to + " dari " + total;
+      pageInfo.textContent = "Showing " + from + "–" + to + " of " + total;
     }
   }
 
-  /** Sort baris tbody saat header th memiliki data-erp-sort (indeks kolom) */
+  /** Sort tbody rows when thead th has data-erp-sort (column index) */
   function initSortableThead(table, tbody, onSorted) {
     if (!table || !tbody) return;
     const thead = table.querySelector("thead");
@@ -668,14 +668,14 @@
 
   function formatRupiahDisplay(n) {
     const num = typeof n === "number" ? n : parseInt(String(n).replace(/\D/g, ""), 10) || 0;
-    return "Rp" + num.toLocaleString("id-ID");
+    return "Rp" + num.toLocaleString("en-US");
   }
 
   function formatTanggalIdShort(iso) {
     if (!iso) return "—";
     const d = new Date(iso + "T00:00:00");
     if (isNaN(d.getTime())) return "—";
-    return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+    return d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
   }
 
   function initGuruTable() {
@@ -702,15 +702,15 @@
 
     function statusBadgeHtml(isAktif) {
       if (isAktif) {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Aktif</span>';
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Active</span>';
       }
-      return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Nonaktif</span>';
+      return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Inactive</span>';
     }
 
     function isRowAktif(tr) {
       const badge = tr.cells[4] && tr.cells[4].querySelector(".erp-badge-status");
       if (!badge) return true;
-      return badge.textContent.trim().toLowerCase() === "aktif";
+      return badge.textContent.trim().toLowerCase() === "active";
     }
 
     function getMatchingRows() {
@@ -757,19 +757,19 @@
     }
 
     function openModalTambah() {
-      if (modalTitle) modalTitle.textContent = "Tambah guru";
+      if (modalTitle) modalTitle.textContent = "Add teacher";
       if (inputId) inputId.value = "";
       formGuru.reset();
-      if (inputStatus) inputStatus.value = "aktif";
+      if (inputStatus) inputStatus.value = "active";
     }
 
     function openModalEdit(tr) {
-      if (modalTitle) modalTitle.textContent = "Edit guru";
+      if (modalTitle) modalTitle.textContent = "Edit teacher";
       if (inputId) inputId.value = tr.getAttribute("data-id") || "";
       if (inputNama) inputNama.value = tr.cells[1].textContent.trim();
       if (inputMapel) inputMapel.value = tr.cells[2].textContent.trim();
       if (inputKontak) inputKontak.value = tr.cells[3].textContent.trim();
-      if (inputStatus) inputStatus.value = isRowAktif(tr) ? "aktif" : "nonaktif";
+      if (inputStatus) inputStatus.value = isRowAktif(tr) ? "active" : "inactive";
     }
 
     if (btnTambah && modalEl) {
@@ -789,7 +789,7 @@
         const b = tr.cells[2] ? tr.cells[2].textContent.trim() : "";
         const c = tr.cells[3] ? tr.cells[3].textContent.trim() : "";
         const d = tr.cells[4] ? tr.cells[4].textContent.trim() : "";
-        alert("Detail guru\n\nNama: " + a + "\nMapel: " + b + "\nKontak: " + c + "\nStatus: " + d);
+        alert("Teacher details\n\nName: " + a + "\nSubject: " + b + "\nContact: " + c + "\nStatus: " + d);
         return;
       }
       if (editBtn && tr && modalEl) {
@@ -799,7 +799,7 @@
       }
       if (delBtn && tr) {
         const nama = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-        if (confirm('Hapus guru "' + nama + '"?')) {
+        if (confirm('Delete teacher "' + nama + '"?')) {
           tr.remove();
           updateTableView();
         }
@@ -820,10 +820,10 @@
       const nama = inputNama ? inputNama.value.trim() : "";
       const mapel = inputMapel ? inputMapel.value.trim() : "";
       const kontak = inputKontak ? inputKontak.value.trim() : "";
-      const st = inputStatus && inputStatus.value === "nonaktif" ? false : true;
+      const st = inputStatus && inputStatus.value === "inactive" ? false : true;
 
       if (!nama || !mapel || !kontak) {
-        alert("Nama guru, mata pelajaran, dan kontak wajib diisi.");
+        alert("Teacher name, subject, and contact are required.");
         return;
       }
 
@@ -858,9 +858,9 @@
           "</td>" +
           '<td class="text-end pe-4 text-nowrap">' +
           '<div class="d-inline-flex align-items-center justify-content-end erp-table-actions">' +
-          '<button type="button" class="btn btn-action btn-action-view btn-view-guru" title="Lihat"><i class="bi bi-eye"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-view btn-view-guru" title="View"><i class="bi bi-eye"></i></button>' +
           '<button type="button" class="btn btn-action btn-action-edit btn-edit-guru" title="Edit"><i class="bi bi-pencil"></i></button>' +
-          '<button type="button" class="btn btn-action btn-action-delete btn-delete-guru" title="Hapus"><i class="bi bi-trash"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-delete btn-delete-guru" title="Delete"><i class="bi bi-trash"></i></button>' +
           "</div></td>";
         tableBody.appendChild(tr);
         currentPage = Math.ceil(getMatchingRows().length / pageSize);
@@ -898,11 +898,11 @@
     let pageSize = pageSizeSelect ? parseInt(pageSizeSelect.value, 10) || 10 : 10;
 
     function tagihanStatusBadgeHtml(val) {
-      if (val === "lunas") {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Lunas</span>';
+      if (val === "lunas" || val === "paid") {
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Paid</span>';
       }
-      if (val === "terlambat") {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Terlambat</span>';
+      if (val === "terlambat" || val === "overdue") {
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Overdue</span>';
       }
       return '<span class="badge rounded-pill text-bg-warning">Pending</span>';
     }
@@ -911,8 +911,8 @@
       const badge = tr.cells[5] && tr.cells[5].querySelector(".badge");
       if (!badge) return "pending";
       const t = badge.textContent.trim().toLowerCase();
-      if (t === "lunas") return "lunas";
-      if (t === "terlambat") return "terlambat";
+      if (t === "lunas" || t === "paid") return "lunas";
+      if (t === "terlambat" || t === "overdue") return "terlambat";
       return "pending";
     }
 
@@ -960,7 +960,7 @@
     }
 
     function openModalTambah() {
-      if (modalTitle) modalTitle.textContent = "Tambah tagihan";
+      if (modalTitle) modalTitle.textContent = "Add invoice";
       if (inputId) inputId.value = "";
       formTagihan.reset();
       if (inputNominal) inputNominal.value = "0";
@@ -968,7 +968,7 @@
     }
 
     function openModalEdit(tr) {
-      if (modalTitle) modalTitle.textContent = "Edit tagihan";
+      if (modalTitle) modalTitle.textContent = "Edit invoice";
       if (inputId) inputId.value = tr.getAttribute("data-id") || "";
       if (inputMurid) inputMurid.value = tr.cells[1].textContent.trim();
       if (inputJenis) inputJenis.value = tr.cells[2].textContent.trim();
@@ -997,7 +997,7 @@
         const n = tr.cells[3] ? tr.cells[3].textContent.trim() : "";
         const t = tr.cells[4] ? tr.cells[4].textContent.trim() : "";
         const s = tr.cells[5] ? tr.cells[5].textContent.trim() : "";
-        alert("Detail tagihan\n\nMurid: " + m + "\nJenis: " + j + "\nNominal: " + n + "\nJatuh tempo: " + t + "\nStatus: " + s);
+        alert("Invoice details\n\nStudent: " + m + "\nType: " + j + "\nAmount: " + n + "\nDue date: " + t + "\nStatus: " + s);
         return;
       }
       if (editBtn && tr && modalEl) {
@@ -1007,7 +1007,7 @@
       }
       if (delBtn && tr) {
         const nama = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-        if (confirm('Hapus tagihan untuk "' + nama + '"?')) {
+        if (confirm('Delete invoice for "' + nama + '"?')) {
           tr.remove();
           updateTableView();
         }
@@ -1033,7 +1033,7 @@
       const st = inputStatus && inputStatus.value ? inputStatus.value : "pending";
 
       if (!murid || !jenis || !tempoIso) {
-        alert("Nama murid, jenis tagihan, dan jatuh tempo wajib diisi.");
+        alert("Student name, invoice type, and due date are required.");
         return;
       }
 
@@ -1077,9 +1077,9 @@
           "</td>" +
           '<td class="text-end pe-4 text-nowrap">' +
           '<div class="d-inline-flex align-items-center justify-content-end erp-table-actions">' +
-          '<button type="button" class="btn btn-action btn-action-view btn-view-tagihan" title="Lihat"><i class="bi bi-eye"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-view btn-view-tagihan" title="View"><i class="bi bi-eye"></i></button>' +
           '<button type="button" class="btn btn-action btn-action-edit btn-edit-tagihan" title="Edit"><i class="bi bi-pencil"></i></button>' +
-          '<button type="button" class="btn btn-action btn-action-delete btn-delete-tagihan" title="Hapus"><i class="bi bi-trash"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-delete btn-delete-tagihan" title="Delete"><i class="bi bi-trash"></i></button>' +
           "</div></td>";
         tableBody.appendChild(tr);
         currentPage = Math.ceil(getMatchingRows().length / pageSize);
@@ -1118,11 +1118,11 @@
     let pageSize = pageSizeSelect ? parseInt(pageSizeSelect.value, 10) || 10 : 10;
 
     function paymentStatusBadgeHtml(val) {
-      if (val === "berhasil") {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Berhasil</span>';
+      if (val === "berhasil" || val === "success") {
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Success</span>';
       }
-      if (val === "gagal") {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Gagal</span>';
+      if (val === "gagal" || val === "failed") {
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Failed</span>';
       }
       return '<span class="badge rounded-pill text-bg-warning">Pending</span>';
     }
@@ -1131,8 +1131,8 @@
       const badge = tr.cells[6] && tr.cells[6].querySelector(".badge");
       if (!badge) return "pending";
       const t = badge.textContent.trim().toLowerCase();
-      if (t === "berhasil") return "berhasil";
-      if (t === "gagal") return "gagal";
+      if (t === "berhasil" || t === "success") return "berhasil";
+      if (t === "gagal" || t === "failed") return "gagal";
       return "pending";
     }
 
@@ -1180,7 +1180,7 @@
     }
 
     function openModalTambah() {
-      if (modalTitle) modalTitle.textContent = "Tambah payment";
+      if (modalTitle) modalTitle.textContent = "Add payment";
       if (inputId) inputId.value = "";
       formPayment.reset();
       if (inputJumlah) inputJumlah.value = "0";
@@ -1214,11 +1214,11 @@
       const tr = viewBtn ? viewBtn.closest("tr") : editBtn ? editBtn.closest("tr") : delBtn ? delBtn.closest("tr") : null;
       if (viewBtn && tr) {
         const parts = [];
-        const labels = ["Kode", "Murid", "Metode", "Jumlah", "Tanggal", "Status"];
+        const labels = ["Code", "Student", "Method", "Amount", "Date", "Status"];
         for (let c = 1; c <= 6; c++) {
           parts.push(labels[c - 1] + ": " + (tr.cells[c] ? tr.cells[c].textContent.trim() : "—"));
         }
-        alert("Detail payment\n\n" + parts.join("\n"));
+        alert("Payment details\n\n" + parts.join("\n"));
         return;
       }
       if (editBtn && tr && modalEl) {
@@ -1228,7 +1228,7 @@
       }
       if (delBtn && tr) {
         const kode = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-        if (confirm('Hapus payment "' + kode + '"?')) {
+        if (confirm('Delete payment "' + kode + '"?')) {
           tr.remove();
           updateTableView();
         }
@@ -1255,7 +1255,7 @@
       const st = inputStatus && inputStatus.value ? inputStatus.value : "berhasil";
 
       if (!kode || !murid || !metode || !tanggalIso) {
-        alert("Kode, murid, metode, dan tanggal wajib diisi.");
+        alert("Code, student, method, and date are required.");
         return;
       }
 
@@ -1303,9 +1303,9 @@
           "</td>" +
           '<td class="text-end pe-4 text-nowrap">' +
           '<div class="d-inline-flex align-items-center justify-content-end erp-table-actions">' +
-          '<button type="button" class="btn btn-action btn-action-view btn-view-payment" title="Lihat"><i class="bi bi-eye"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-view btn-view-payment" title="View"><i class="bi bi-eye"></i></button>' +
           '<button type="button" class="btn btn-action btn-action-edit btn-edit-payment" title="Edit"><i class="bi bi-pencil"></i></button>' +
-          '<button type="button" class="btn btn-action btn-action-delete btn-delete-payment" title="Hapus"><i class="bi bi-trash"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-delete btn-delete-payment" title="Delete"><i class="bi bi-trash"></i></button>' +
           "</div></td>";
         tableBody.appendChild(tr);
         currentPage = Math.ceil(getMatchingRows().length / pageSize);
@@ -1343,26 +1343,26 @@
     let pageSize = pageSizeSelect ? parseInt(pageSizeSelect.value, 10) || 10 : 10;
 
     function absensiBadgeHtml(val) {
-      if (val === "hadir") {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Hadir</span>';
+      if (val === "hadir" || val === "present") {
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Present</span>';
       }
-      if (val === "izin") {
-        return '<span class="badge rounded-pill text-bg-warning">Izin</span>';
+      if (val === "izin" || val === "excused") {
+        return '<span class="badge rounded-pill text-bg-warning">Excused</span>';
       }
-      if (val === "sakit") {
-        return '<span class="badge rounded-pill text-bg-secondary">Sakit</span>';
+      if (val === "sakit" || val === "sick") {
+        return '<span class="badge rounded-pill text-bg-secondary">Sick</span>';
       }
-      return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Alpha</span>';
+      return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Absent</span>';
     }
 
     function absensiFromRow(tr) {
       const badge = tr.cells[4] && tr.cells[4].querySelector(".badge");
       if (!badge) return "hadir";
       const t = badge.textContent.trim().toLowerCase();
-      if (t === "hadir") return "hadir";
-      if (t === "izin") return "izin";
-      if (t === "sakit") return "sakit";
-      if (t === "alpha") return "alpha";
+      if (t === "hadir" || t === "present") return "hadir";
+      if (t === "izin" || t === "excused") return "izin";
+      if (t === "sakit" || t === "sick") return "sakit";
+      if (t === "alpha" || t === "absent") return "alpha";
       return "hadir";
     }
 
@@ -1410,14 +1410,14 @@
     }
 
     function openModalTambah() {
-      if (modalTitle) modalTitle.textContent = "Tambah absensi";
+      if (modalTitle) modalTitle.textContent = "Add attendance";
       if (inputId) inputId.value = "";
       formAbsensi.reset();
       if (inputKehadiran) inputKehadiran.value = "hadir";
     }
 
     function openModalEdit(tr) {
-      if (modalTitle) modalTitle.textContent = "Edit absensi";
+      if (modalTitle) modalTitle.textContent = "Edit attendance";
       if (inputId) inputId.value = tr.getAttribute("data-id") || "";
       if (inputMurid) inputMurid.value = tr.cells[1].textContent.trim();
       if (inputKelas) inputKelas.value = tr.cells[2].textContent.trim();
@@ -1446,7 +1446,7 @@
         const t = tr.cells[3] ? tr.cells[3].textContent.trim() : "";
         const h = tr.cells[4] ? tr.cells[4].textContent.trim() : "";
         const ket = tr.cells[5] ? tr.cells[5].textContent.trim() : "";
-        alert("Detail absensi\n\nMurid: " + m + "\nKelas: " + k + "\nTanggal: " + t + "\nKehadiran: " + h + "\nKeterangan: " + ket);
+        alert("Attendance details\n\nStudent: " + m + "\nClass: " + k + "\nDate: " + t + "\nAttendance: " + h + "\nNotes: " + ket);
         return;
       }
       if (editBtn && tr && modalEl) {
@@ -1456,7 +1456,7 @@
       }
       if (delBtn && tr) {
         const nama = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-        if (confirm('Hapus absensi "' + nama + '"?')) {
+        if (confirm('Delete attendance "' + nama + '"?')) {
           tr.remove();
           updateTableView();
         }
@@ -1482,7 +1482,7 @@
       if (ket === "") ket = "—";
 
       if (!murid || !kelas || !tanggalIso) {
-        alert("Nama murid, kelas, dan tanggal wajib diisi.");
+        alert("Student name, class, and date are required.");
         return;
       }
 
@@ -1525,9 +1525,9 @@
           "</td>" +
           '<td class="text-end pe-4 text-nowrap">' +
           '<div class="d-inline-flex align-items-center justify-content-end erp-table-actions">' +
-          '<button type="button" class="btn btn-action btn-action-view btn-view-absensi" title="Lihat"><i class="bi bi-eye"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-view btn-view-absensi" title="View"><i class="bi bi-eye"></i></button>' +
           '<button type="button" class="btn btn-action btn-action-edit btn-edit-absensi" title="Edit"><i class="bi bi-pencil"></i></button>' +
-          '<button type="button" class="btn btn-action btn-action-delete btn-delete-absensi" title="Hapus"><i class="bi bi-trash"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-delete btn-delete-absensi" title="Delete"><i class="bi bi-trash"></i></button>' +
           "</div></td>";
         tableBody.appendChild(tr);
         currentPage = Math.ceil(getMatchingRows().length / pageSize);
@@ -1606,14 +1606,14 @@
     }
 
     function openModalTambah() {
-      if (modalTitle) modalTitle.textContent = "Tambah Kelas";
+      if (modalTitle) modalTitle.textContent = "Add class";
       if (inputId) inputId.value = "";
       formKelas.reset();
       if (inputJumlah) inputJumlah.value = "0";
     }
 
     function openModalEdit(tr) {
-      if (modalTitle) modalTitle.textContent = "Edit Kelas";
+      if (modalTitle) modalTitle.textContent = "Edit class";
       if (inputId) inputId.value = tr.getAttribute("data-id") || "";
       if (inputNama) inputNama.value = tr.cells[1].textContent.trim();
       if (inputWali) inputWali.value = tr.cells[2].textContent.trim();
@@ -1637,7 +1637,7 @@
         const waliV = tr.cells[2] ? tr.cells[2].textContent.trim() : "";
         const jumV = tr.cells[3] ? tr.cells[3].textContent.trim() : "";
         const statV = tr.cells[4] ? tr.cells[4].textContent.trim() : "";
-        alert("Detail kelas\n\nNama: " + namaV + "\nWali: " + waliV + "\nJumlah siswa: " + jumV + "\nStatus: " + statV);
+        alert("Class details\n\nName: " + namaV + "\nHomeroom teacher: " + waliV + "\nStudents: " + jumV + "\nStatus: " + statV);
         return;
       }
       if (editBtn && tr && modalEl) {
@@ -1647,7 +1647,7 @@
       }
       if (delBtn && tr) {
         const nama = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-        if (confirm('Hapus kelas "' + nama + '"?')) {
+        if (confirm('Delete class "' + nama + '"?')) {
           tr.remove();
           updateTableView();
         }
@@ -1671,7 +1671,7 @@
       if (isNaN(jumlah) || jumlah < 0) jumlah = 0;
 
       if (!nama || !wali) {
-        alert("Nama kelas dan wali kelas wajib diisi.");
+        alert("Class name and homeroom teacher are required.");
         return;
       }
 
@@ -1703,9 +1703,9 @@
           '<td><span class="badge rounded-pill erp-badge-status erp-badge-pass">Pass</span></td>' +
           '<td class="text-end pe-4 text-nowrap">' +
           '<div class="d-inline-flex align-items-center justify-content-end erp-table-actions">' +
-          '<button type="button" class="btn btn-action btn-action-view btn-view-kelas" title="Lihat"><i class="bi bi-eye"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-view btn-view-kelas" title="View"><i class="bi bi-eye"></i></button>' +
           '<button type="button" class="btn btn-action btn-action-edit btn-edit-kelas" title="Edit"><i class="bi bi-pencil"></i></button>' +
-          '<button type="button" class="btn btn-action btn-action-delete btn-delete-kelas" title="Hapus"><i class="bi bi-trash"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-delete btn-delete-kelas" title="Delete"><i class="bi bi-trash"></i></button>' +
           "</div></td>";
         tableBody.appendChild(tr);
         currentPage = Math.ceil(getMatchingRows().length / pageSize);
@@ -1744,15 +1744,15 @@
 
     function statusBadgeHtml(isAktif) {
       if (isAktif) {
-        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Aktif</span>';
+        return '<span class="badge rounded-pill erp-badge-status erp-badge-pass">Active</span>';
       }
-      return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Nonaktif</span>';
+      return '<span class="badge rounded-pill erp-badge-status erp-badge-failed">Inactive</span>';
     }
 
     function isRowAktif(tr) {
       const badge = tr.cells[4] && tr.cells[4].querySelector(".erp-badge-status");
       if (!badge) return true;
-      return badge.textContent.trim().toLowerCase() === "aktif";
+      return badge.textContent.trim().toLowerCase() === "active";
     }
 
     function getMatchingRows() {
@@ -1799,19 +1799,19 @@
     }
 
     function openModalTambah() {
-      if (modalTitle) modalTitle.textContent = "Tambah murid";
+      if (modalTitle) modalTitle.textContent = "Add student";
       if (inputId) inputId.value = "";
       formMurid.reset();
-      if (inputStatus) inputStatus.value = "aktif";
+      if (inputStatus) inputStatus.value = "active";
     }
 
     function openModalEdit(tr) {
-      if (modalTitle) modalTitle.textContent = "Edit murid";
+      if (modalTitle) modalTitle.textContent = "Edit student";
       if (inputId) inputId.value = tr.getAttribute("data-id") || "";
       if (inputNama) inputNama.value = tr.cells[1].textContent.trim();
       if (inputKelas) inputKelas.value = tr.cells[2].textContent.trim();
       if (inputOrtu) inputOrtu.value = tr.cells[3].textContent.trim();
-      if (inputStatus) inputStatus.value = isRowAktif(tr) ? "aktif" : "nonaktif";
+      if (inputStatus) inputStatus.value = isRowAktif(tr) ? "active" : "inactive";
     }
 
     function fillDetailModal(tr) {
@@ -1853,7 +1853,7 @@
       }
       if (delBtn && tr) {
         const nama = tr.cells[1] ? tr.cells[1].textContent.trim() : "";
-        if (confirm('Hapus murid "' + nama + '"?')) {
+        if (confirm('Delete student "' + nama + '"?')) {
           tr.remove();
           updateTableView();
         }
@@ -1874,10 +1874,10 @@
       const nama = inputNama ? inputNama.value.trim() : "";
       const kelas = inputKelas ? inputKelas.value.trim() : "";
       const ortu = inputOrtu ? inputOrtu.value.trim() : "";
-      const st = inputStatus && inputStatus.value === "nonaktif" ? false : true;
+      const st = inputStatus && inputStatus.value === "inactive" ? false : true;
 
       if (!nama || !kelas || !ortu) {
-        alert("Nama murid, kelas, dan nama orang tua wajib diisi.");
+        alert("Student name, class, and parent name are required.");
         return;
       }
 
@@ -1916,7 +1916,7 @@
           '<div class="d-inline-flex align-items-center justify-content-end erp-table-actions">' +
           '<button type="button" class="btn btn-action btn-action-view btn-view-murid" title="Detail"><i class="bi bi-eye"></i></button>' +
           '<button type="button" class="btn btn-action btn-action-edit btn-edit-murid" title="Edit"><i class="bi bi-pencil"></i></button>' +
-          '<button type="button" class="btn btn-action btn-action-delete btn-delete-murid" title="Hapus"><i class="bi bi-trash"></i></button>' +
+          '<button type="button" class="btn btn-action btn-action-delete btn-delete-murid" title="Delete"><i class="bi bi-trash"></i></button>' +
           "</div></td>";
         tableBody.appendChild(tr);
         currentPage = Math.ceil(getMatchingRows().length / pageSize);
@@ -1947,7 +1947,7 @@
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", function () {
-      if (confirm("Keluar dari sesi?")) {
+      if (confirm("Sign out?")) {
         window.location.href = "#";
       }
     });

@@ -157,7 +157,7 @@ function parseNumberLike(s) {
   return Number.isFinite(n) ? n : 0;
 }
 
-/** Instance Chart di luar objek Alpine (Proxy) — cegah error Chart.js seperti `fullSize` / stack overflow. */
+/** Chart instance outside Alpine (Proxy) — avoids Chart.js errors like `fullSize` / stack overflow. */
 const _dashboardCharts = { bar: null, pie: null, ring: null, line: null };
 
 function destroyDashboardChart(key) {
@@ -168,14 +168,14 @@ function destroyDashboardChart(key) {
   _dashboardCharts[key] = null;
 }
 
-/** Padding bawah: ruang label sumbu X; minimal 15 — lebih kecil = legenda bulan lebih dekat bottom canvas */
+/** Bottom padding: space for X-axis labels; minimum 15 — smaller brings month legend closer to canvas bottom */
 function calcTrendChartLayoutPaddingBottom(heightPx) {
   const h = Math.max(100, Number(heightPx) || 200);
   const raw = Math.round(h * 0.055 + 5);
   return Math.max(15, Math.min(48, raw));
 }
 
-/** Padding atas: mendorong batang + label ke bawah dalam area chart */
+/** Top padding: pushes bars + labels down within the chart area */
 function calcTrendChartLayoutPaddingTop(heightPx) {
   const h = Math.max(100, Number(heightPx) || 200);
   return Math.max(12, Math.min(40, Math.round(h * 0.06)));
@@ -198,8 +198,8 @@ const trendBarLayoutPaddingPlugin = {
 };
 
 /**
- * Tooltip HTML kustom donut — baris: kotak warna | label abu | nilai gelap (kanan),
- * bentuk pill putih; posisi mengikuti titik hover segmen (caret).
+ * Custom HTML donut tooltip — row: color swatch | gray label | dark value (right),
+ * pill-shaped white background; position follows segment hover (caret).
  */
 function pieChartExternalTooltip(context) {
   const { chart, tooltip } = context;
@@ -255,7 +255,7 @@ function pieChartExternalTooltip(context) {
   row.append(sw, labEl, valEl);
   el.appendChild(row);
 
-  /* Posisi di dekat segmen yang di-hover (seperti referensi), koordinat relatif ke canvas = ke wrapper */
+  /* Position near hovered segment; coordinates relative to canvas wrapper */
   if (typeof tooltip.caretX === "number" && typeof tooltip.caretY === "number") {
     el.style.left = `${tooltip.caretX}px`;
     el.style.top = `${tooltip.caretY}px`;
@@ -270,7 +270,7 @@ function pieChartExternalTooltip(context) {
   el.style.visibility = "visible";
 }
 
-/** Opsi plugin tooltip untuk donut — external HTML, bukan canvas/default. */
+/** Donut tooltip plugin options — external HTML, not canvas/default. */
 function getPieDonutTooltipPluginOptions() {
   return {
     enabled: false,
@@ -287,24 +287,24 @@ function getPieDonutTooltipPluginOptions() {
 
 function calcNiceMax(values) {
   const max = Math.max(0, ...values.map((v) => (Number.isFinite(v) ? v : 0)));
-  /* Sedikit headroom saja → batang terlihat lebih panjang / area chart terpakai */
+  /* Small headroom so bars use more of the chart area */
   const padded = max <= 0 ? 10 : max * 1.02;
-  // bulatkan ke kelipatan 5
+  // round up to a multiple of 5
   return Math.max(10, Math.ceil(padded / 5) * 5);
 }
 
-/** Dark mode chart palette (referensi: batang putih + abu di latar gelap) */
+/** Dark mode chart palette (reference: white bars + gray on dark) */
 function chartThemeIsDark() {
   return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
-/** Warna batang statistik kehadiran — oranye + teal (referensi diagram) */
+/** Attendance stat bar colors — orange + teal */
 function getAttendanceMixedTheme() {
   if (chartThemeIsDark()) {
     return {
       barLaki: "#ff7a3d",
       barPerempuan: "#2dd4bf",
-      tickColor: "rgba(203, 213, 225, 0.88)",
+      tickColor: "#e4e4e8",
     };
   }
   return {
@@ -314,7 +314,7 @@ function getAttendanceMixedTheme() {
   };
 }
 
-/** Tema garis aktivitas: primer gelap / sekunder abu; mode gelap dibalik */
+/** Activity line theme: dark primary / gray secondary; inverted in dark mode */
 function getActivityLineTheme() {
   if (chartThemeIsDark()) {
     return {
@@ -377,7 +377,7 @@ function buildActivityLineChartOptions() {
 }
 
 /**
- * Tooltip Chart.js seperti bawaan donut (judul + baris ber-kotak warna), dengan latar cerah semi-transparan.
+ * Chart.js tooltip similar to the default donut (title + color rows), with a light semi-transparent background.
  */
 function getBrightGlassTooltipOptions() {
   const dark = chartThemeIsDark();
@@ -385,8 +385,8 @@ function getBrightGlassTooltipOptions() {
     return {
       enabled: true,
       backgroundColor: "rgba(30, 41, 59, 0.88)",
-      titleColor: "rgba(248, 250, 252, 0.96)",
-      bodyColor: "rgba(226, 232, 240, 0.92)",
+      titleColor: "#e4e4e8",
+      bodyColor: "#e4e4e8",
       borderColor: "rgba(255, 255, 255, 0.14)",
       borderWidth: 1,
       padding: 12,
@@ -426,8 +426,8 @@ function getBrightGlassTooltipOptions() {
 }
 
 /**
- * Donut distribusi pembayaran — urutan segmen = urutan label data (Chart.js).
- * Palet mirip referensi “store visits”: oranye → amber → kuning → navy gelap → teal.
+ * Payment distribution donut — segment order matches data label order (Chart.js).
+ * Palette inspired by “store visits”: orange → amber → yellow → dark navy → teal.
  */
 function getPaymentDonutColors() {
   if (chartThemeIsDark()) {
@@ -451,7 +451,7 @@ function getPaymentDonutColors() {
 // eslint-disable-next-line no-unused-vars
 function dashboard(config) {
   const cfg = config || {};
-  const pieLabels = ["Langsung", "Medsos", "Email", "Referral", "Lainnya"];
+  const pieLabels = ["Direct", "Social", "Email", "Referral", "Other"];
 
   return {
     /** @type {'month'|'week'|'day'} */
@@ -539,7 +539,7 @@ function dashboard(config) {
         const t = Math.min(1, (now - start) / durationMs);
         for (const it of targets) {
           const v = Math.round(it.target * t);
-          it.el.textContent = v.toLocaleString("id-ID");
+          it.el.textContent = v.toLocaleString("en-US");
         }
         if (t < 1) requestAnimationFrame(tick);
       };
@@ -566,12 +566,12 @@ function dashboard(config) {
 
     getBarData() {
       /*
-       * Semua rentang memakai 6 kategori — sama seperti "Bulan" — supaya lebar grup/batang
-       * dan jarak antar grup identik di Chart.js (7 titik membuat slot lebih sempit).
+       * All ranges use 6 categories — same as "Month" — so group width/bar spacing
+       * stays consistent in Chart.js (7 ticks would make slots tighter).
        */
       if (this.range === "week") {
         return {
-          labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+          labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
           laki: [70, 68, 74, 78, 72, 58],
           perempuan: [62, 60, 66, 70, 65, 52],
         };
@@ -584,7 +584,7 @@ function dashboard(config) {
         };
       }
       return {
-        labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni"],
+        labels: ["January", "February", "March", "April", "May", "June"],
         laki: [72, 75, 78, 80, 82, 84],
         perempuan: [64, 67, 70, 73, 75, 77],
       };
@@ -599,7 +599,7 @@ function dashboard(config) {
       return map[this.range] || map.month;
     },
 
-    /** Volume demo untuk teks tengah donut (bukan jumlah persen) */
+    /** Demo volume for donut center text (not a percentage total) */
     getPaymentVolumeTotal() {
       const map = {
         week: 10200,
@@ -651,11 +651,11 @@ function dashboard(config) {
       const ctxPie = pieEl.getContext("2d");
 
       /*
-       * Jarak antar dua batang dalam satu grup: utamanya datasets.bar.barPercentage
-       * (0–1, makin kecil = celah antar batang makin lebar; 1 = penuh tanpa celah).
-       * maxBarThickness membatasi lebar tiap batang (px); jika slot lebih lebar, tampak ada celah.
+       * Gap between the two bars in one group: mainly datasets.bar.barPercentage
+       * (0–1, smaller = wider gap between bars; 1 = full width, no gap).
+       * maxBarThickness caps each bar width (px); if the slot is wider, you see gaps.
        */
-      /* Sudut membulat (empat sisi); sedikit lebih besar agar terbaca di dashboard */
+      /* Rounded corners (all sides); slightly larger for readability on the dashboard */
       const barR = 8;
       const barRadiusAll = { topLeft: barR, topRight: barR, bottomLeft: barR, bottomRight: barR };
       const barThicknessCap = 35;
@@ -673,7 +673,7 @@ function dashboard(config) {
             datasets: [
               {
                 type: "bar",
-                label: "Siswa Laki-laki",
+                label: "Male students",
                 data: d.laki,
                 order: 1,
                 borderWidth: 0,
@@ -684,7 +684,7 @@ function dashboard(config) {
               },
               {
                 type: "bar",
-                label: "Siswa Perempuan",
+                label: "Female students",
                 data: d.perempuan,
                 order: 1,
                 borderWidth: 0,
@@ -702,9 +702,9 @@ function dashboard(config) {
             layout: { padding: { top: initialTopPad, right: 10, bottom: initialBottomPad, left: 10 } },
             datasets: {
               bar: {
-                /* makin besar = grup memakai lebih banyak lebar slot → jarak antar grup terlihat lebih rapat */
+                /* larger = group uses more of the slot width → inter-group spacing looks tighter */
                 categoryPercentage: 0.88,
-                /* sedikit celah antar batang laki vs perempuan dalam satu label */
+                /* small gap between male vs female bars within one category */
                 barPercentage: 0.86,
               },
             },
@@ -821,7 +821,7 @@ function dashboard(config) {
               labels: demo.labels,
               datasets: [
                 {
-                  label: "Minggu ini",
+                  label: "This week",
                   data: demo.thisPeriod,
                   tension: 0.4,
                   borderWidth: 2,
@@ -834,7 +834,7 @@ function dashboard(config) {
                   pointBorderWidth: 2,
                 },
                 {
-                  label: "Rata-rata",
+                  label: "Average",
                   data: demo.baseline,
                   tension: 0.4,
                   borderWidth: 2,
@@ -930,7 +930,7 @@ function dashboard(config) {
 window.dashboard = dashboard;
 
 /**
- * Tabel pembayaran terbaru (demo) — filter, checkbox, badge status, pagination.
+ * Latest payments table (demo) — filter, checkbox, status badges, pagination.
  */
 // eslint-disable-next-line no-unused-vars
 function latestPaymentsTable() {
@@ -960,7 +960,7 @@ function latestPaymentsTable() {
     },
 
     formatIdr(n) {
-      return new Intl.NumberFormat("id-ID", {
+      return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "IDR",
         maximumFractionDigits: 0,
@@ -968,7 +968,7 @@ function latestPaymentsTable() {
     },
 
     statusLabel(st) {
-      const m = { success: "Lunas", processing: "Diproses", failed: "Gagal" };
+      const m = { success: "Paid", processing: "Processing", failed: "Failed" };
       return m[st] || st;
     },
 
@@ -1036,15 +1036,15 @@ function latestPaymentsTable() {
     },
 
     get pageInfo() {
-      if (this.totalFiltered === 0) return "Tidak ada data";
-      return `Halaman ${this.page} dari ${this.totalPages}`;
+      if (this.totalFiltered === 0) return "No data";
+      return `Page ${this.page} of ${this.totalPages}`;
     },
 
     get pageSummary() {
       const sel = this.selectedCount;
-      const base = this.totalFiltered === 0 ? "Tidak ada data" : `Halaman ${this.page} dari ${this.totalPages}`;
+      const base = this.totalFiltered === 0 ? "No data" : `Page ${this.page} of ${this.totalPages}`;
       if (!sel) return base;
-      return `${base} · ${sel} dari ${this.rows.length} dipilih`;
+      return `${base} · ${sel} of ${this.rows.length} selected`;
     },
 
     toggleRowMenu(row) {
@@ -1085,7 +1085,7 @@ function dataTable(config) {
 
     // modal state for CRUD
     modalOpen: false,
-    modalMode: "create", // create|edit
+    modalMode: "create", // create|edit|view
     form: {},
     formDefaults: cfg.formDefaults || {},
     rowMenuId: null,
@@ -1111,20 +1111,34 @@ function dataTable(config) {
       this.form = { ...this.formDefaults };
     },
 
+    _setModalBodyLock(open) {
+      document.body.classList.toggle("overflow-hidden", !!open);
+    },
+
     openCreate() {
       this.modalMode = "create";
       this.resetForm();
       this.modalOpen = true;
+      this._setModalBodyLock(true);
     },
 
     openEdit(row) {
       this.modalMode = "edit";
       this.form = JSON.parse(JSON.stringify(row || {}));
       this.modalOpen = true;
+      this._setModalBodyLock(true);
+    },
+
+    openView(row) {
+      this.modalMode = "view";
+      this.form = JSON.parse(JSON.stringify(row || {}));
+      this.modalOpen = true;
+      this._setModalBodyLock(true);
     },
 
     closeModal() {
       this.modalOpen = false;
+      this._setModalBodyLock(false);
     },
 
     removeRow(row) {
@@ -1204,9 +1218,9 @@ function dataTable(config) {
           if (type === "number") {
             return (parseNumberLike(av) - parseNumberLike(bv)) * dirMul;
           }
-          const as = (av == null ? "" : String(av)).toLocaleLowerCase("id");
-          const bs = (bv == null ? "" : String(bv)).toLocaleLowerCase("id");
-          return as.localeCompare(bs, "id", { numeric: true, sensitivity: "base" }) * dirMul;
+          const as = (av == null ? "" : String(av)).toLocaleLowerCase("en");
+          const bs = (bv == null ? "" : String(bv)).toLocaleLowerCase("en");
+          return as.localeCompare(bs, "en", { numeric: true, sensitivity: "base" }) * dirMul;
         });
     },
 
@@ -1238,8 +1252,8 @@ function dataTable(config) {
     },
 
     get pageInfo() {
-      if (this.total === 0) return "Tidak ada data";
-      return `Halaman ${this.page} dari ${this.totalPages}`;
+      if (this.total === 0) return "No data";
+      return `Page ${this.page} of ${this.totalPages}`;
     },
 
     // Pagination helpers for UI
@@ -1273,9 +1287,14 @@ function dataTable(config) {
       return pages;
     },
 
-    // Action callback (optional)
+    // Action callback (optional); falls back to read-only modal when onView is omitted
     viewRow(row) {
-      if (typeof cfg.onView === "function") cfg.onView(row);
+      this.closeRowMenu();
+      if (typeof cfg.onView === "function") {
+        cfg.onView(row);
+        return;
+      }
+      this.openView(row);
     },
   };
 }
